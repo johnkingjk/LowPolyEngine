@@ -1,5 +1,7 @@
 package engine;
 
+import org.lwjgl.opengl.Display;
+
 /**
  * Created by Marco on 22.12.2014.
  */
@@ -16,10 +18,10 @@ public class LowPolyEngine {
                         )
         );
 
-        try {
-            Thread.sleep(10 * 60L);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        while(!Display.isCloseRequested()) {
+            DisplayManager.update();
         }
+
+        DisplayManager.destroy();
     }
 }
