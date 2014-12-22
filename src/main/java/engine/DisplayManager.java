@@ -17,6 +17,7 @@ public class DisplayManager {
             //TODO : throw exception
             return;
         }
+
         System.setProperty("org.lwjgl.librarypath", new File("src/main/resources/natives").getAbsolutePath());
         try {
             ContextAttribs attributes = new ContextAttribs(3, 2).withForwardCompatible(true).withProfileCore(true);
@@ -32,6 +33,7 @@ public class DisplayManager {
             e.printStackTrace();
             return;
         }
+
         DisplayManager.window = window;
     }
 
@@ -45,6 +47,7 @@ public class DisplayManager {
             //TODO : throw exception
             return;
         }
+
         Display.destroy();
         DisplayManager.window = null;
     }
