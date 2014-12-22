@@ -1,6 +1,6 @@
 package engine.texture;
 
-import org.lwjgl.util.vector.Vector3f;
+import engine.math.Vector3f;
 
 /**
  * Copyright by michidk
