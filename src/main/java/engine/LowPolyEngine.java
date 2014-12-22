@@ -12,7 +12,7 @@ public class LowPolyEngine {
                 new Window("LowPolyEngine Test",
                         960,
                         600,
-                        true,
+                        false,
                         true,
                         60
                         )
