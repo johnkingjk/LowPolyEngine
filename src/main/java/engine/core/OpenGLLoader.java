@@ -1,6 +1,6 @@
-package engine.texture;
+package engine.core;
 
-import engine.core.Unloadable;
+import engine.texture.Texture;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
@@ -15,11 +15,11 @@ import java.util.ArrayList;
 /**
  * Created by Marco on 23.12.2014.
  */
-public class TextureLoader implements Unloadable {
+public class OpenGLLoader implements Unloadable {
 
     private static final ArrayList<Integer> imageIDs = new ArrayList<>();
 
-    public int loadTexture (String fileName, boolean useAlpha) {
+    public Texture loadTexture (String fileName, boolean useAlpha) {
         int bytesPerPixel = useAlpha ? 4 : 3;
         try {
             BufferedImage image = ImageIO.read(new File(fileName));
@@ -57,10 +57,10 @@ public class TextureLoader implements Unloadable {
             GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, byteMode, image.getWidth(), image.getHeight(), 0, mode, GL11.GL_UNSIGNED_BYTE, buffer);
             GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
 
-            return textureID;
+            return new Texture(textureID);
         } catch (IOException e) {
             e.printStackTrace();
-            return -1;
+            return null;
         }
     }
 

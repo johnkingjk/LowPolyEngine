@@ -1,8 +1,9 @@
 package engine.model;
 
+import engine.core.OpenGLLoader;
 import engine.math.Vector3f;
 import engine.texture.Material;
-import engine.texture.TextureLoader;
+import engine.texture.Texture;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -15,12 +16,17 @@ import java.util.ArrayList;
 public class ModelLoader {
 
     private static final boolean USE_ALPHA_MATERIALS = false;
-    private static final Material DEFAULT_MATERIAL = new Material("default", new Vector3f(0, 0, 0), new Vector3f(0.5f, 0.5f, 0.5f), new Vector3f(0, 0, 0), (byte) 0, 0, 0, 0);
+    private static final Material DEFAULT_MATERIAL = new Material("default", new Vector3f(0, 0, 0), new Vector3f(0.5f, 0.5f, 0.5f), new Vector3f(0, 0, 0), (byte) 0, 0, 0, new Texture(0));
 
+    /*
+    reads the .obj file
+     */
     public Model readObjectFile(String file) {
         try {
             BufferedReader reader = new BufferedReader(new FileReader(file));
             String line;
+            Material current = DEFAULT_MATERIAL;
+            ArrayList<Material> materials = null;
             while((line = reader.readLine()) != null) {
 
             }
@@ -34,9 +40,9 @@ public class ModelLoader {
     }
 
     /*
-    reads the material file
+    reads the .mtl file
      */
-    public ArrayList<Material> readMaterialFile(String file, TextureLoader loader) {
+    public ArrayList<Material> readMaterialFile(String file, OpenGLLoader loader) {
         ArrayList<Material> result = new ArrayList<>();
         try {
             BufferedReader reader = new BufferedReader(new FileReader(file));
@@ -81,8 +87,8 @@ public class ModelLoader {
                         continue;
                     case "map_Kd" :
                         String textureFile = file.substring(0, file.lastIndexOf("/") + 1) + data[1];
-                        int textureID = loader.loadTexture(textureFile, USE_ALPHA_MATERIALS);
-                        current.setTextureID(textureID);
+                        Texture texture = loader.loadTexture(textureFile, USE_ALPHA_MATERIALS);
+                        current.setTexture(texture);
                 }
             }
             reader.close();

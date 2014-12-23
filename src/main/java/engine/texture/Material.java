@@ -15,13 +15,13 @@ public class Material {
     private byte illumination;
     private float shininess;
     private float transparency;
-    private int textureID;
+    private Texture texture;
 
     public Material(String name) {
         this.name = name;
     }
 
-    public Material(String name, Vector3f ambientColor, Vector3f diffuseColor, Vector3f specularColor, byte illumination, float shininess, float transparency, int textureID) {
+    public Material(String name, Vector3f ambientColor, Vector3f diffuseColor, Vector3f specularColor, byte illumination, float shininess, float transparency, Texture texture) {
         this.name = name;
         this.ambientColor = ambientColor;
         this.diffuseColor = diffuseColor;
@@ -29,7 +29,7 @@ public class Material {
         this.illumination = illumination;
         this.shininess = shininess;
         this.transparency = transparency;
-        this.textureID = textureID;
+        this.texture = texture;
     }
 
     public String getName() {
@@ -88,11 +88,11 @@ public class Material {
         this.transparency = transparency;
     }
 
-    public int getTextureID() {
-        return textureID;
+    public Texture getTexture() {
+        return texture;
     }
 
-    public void setTextureID(int textureID) {
-        this.textureID = textureID;
+    public void setTexture(Texture texture) {
+        this.texture = texture;
     }
 }
