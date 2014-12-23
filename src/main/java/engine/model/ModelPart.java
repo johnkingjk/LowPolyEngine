@@ -11,10 +11,9 @@ public class ModelPart {
     private int indexStart;
     private int indexCount;
 
-    public ModelPart(Material material, int indexStart, int indexCount) {
+    public ModelPart(Material material, int indexStart) {
         this.material = material;
         this.indexStart = indexStart;
-        this.indexCount = indexCount;
     }
 
     public Material getMaterial() {
@@ -27,5 +26,9 @@ public class ModelPart {
 
     public int getIndexCount() {
         return indexCount;
+    }
+
+    public void addIndex() {
+        indexCount++;
     }
 }

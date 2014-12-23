@@ -15,6 +15,7 @@ import java.util.ArrayList;
 public class ModelLoader {
 
     private static final boolean USE_ALPHA_MATERIALS = false;
+    private static final Material DEFAULT_MATERIAL = new Material("default", new Vector3f(0, 0, 0), new Vector3f(0.5f, 0.5f, 0.5f), new Vector3f(0, 0, 0), (byte) 0, 0, 0, 0);
 
     public Model readObjectFile(String file) {
         try {
