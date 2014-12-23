@@ -12,7 +12,7 @@ public class Material {
     private Vector3f ambientColor;
     private Vector3f diffuseColor;
     private Vector3f specularColor;
-    private boolean illumination;
+    private byte illumination;
     private float shininess;
     private float transparency;
     private int textureID;
@@ -21,7 +21,7 @@ public class Material {
         this.name = name;
     }
 
-    public Material(String name, Vector3f ambientColor, Vector3f diffuseColor, Vector3f specularColor, boolean illumination, float shininess, float transparency, int textureID) {
+    public Material(String name, Vector3f ambientColor, Vector3f diffuseColor, Vector3f specularColor, byte illumination, float shininess, float transparency, int textureID) {
         this.name = name;
         this.ambientColor = ambientColor;
         this.diffuseColor = diffuseColor;
@@ -64,11 +64,11 @@ public class Material {
         this.specularColor = specularColor;
     }
 
-    public boolean isIllumination() {
+    public byte getIllumination() {
         return illumination;
     }
 
-    public void setIllumination(boolean illumination) {
+    public void setIllumination(byte illumination) {
         this.illumination = illumination;
     }
 
