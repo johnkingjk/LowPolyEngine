@@ -35,9 +35,9 @@ public class Matrix4f {
 
     public Matrix4f translate(Vector3f translation) {
         m[3][0] += m[0][0] * translation.getX() + m[1][0] * translation.getY() + m[2][0] * translation.getZ();
-        m[3][0] += m[0][1] * translation.getX() + m[1][1] * translation.getY() + m[2][1] * translation.getZ();
-        m[3][0] += m[0][2] * translation.getX() + m[1][2] * translation.getY() + m[2][2] * translation.getZ();
-        m[3][0] += m[0][3] * translation.getX() + m[1][3] * translation.getY() + m[2][3] * translation.getZ();
+        m[3][1] += m[0][1] * translation.getX() + m[1][1] * translation.getY() + m[2][1] * translation.getZ();
+        m[3][2] += m[0][2] * translation.getX() + m[1][2] * translation.getY() + m[2][2] * translation.getZ();
+        m[3][3] += m[0][3] * translation.getX() + m[1][3] * translation.getY() + m[2][3] * translation.getZ();
 
         return this;
     }
