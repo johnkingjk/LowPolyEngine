@@ -88,14 +88,6 @@ public class Matrix4f {
         return this;
     }
 
-    public void copyTo(float[][] matrix) {
-        for(int x = 0; x < 4; x++) {
-            for(int y = 0; y < 4; y++) {
-                matrix[x][y] = m[x][y];
-            }
-        }
-    }
-
     public Matrix4f scale(Vector3f scale) {
         m[0][0] *= scale.getX();
         m[0][1] *= scale.getX();
@@ -181,6 +173,14 @@ public class Matrix4f {
         }
 
         return res;
+    }
+
+    public void copyTo(float[][] matrix) {
+        for(int x = 0; x < 4; x++) {
+            for(int y = 0; y < 4; y++) {
+                matrix[x][y] = m[x][y];
+            }
+        }
     }
 
     public float[][] getM() {
