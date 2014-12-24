@@ -20,11 +20,11 @@ public class Transform {
     }
 
     public Matrix4f getTransformation() {
-        Matrix4f translationMatrix = new Matrix4f().initTranslation(translation.getX(), translation.getY(), translation.getZ());
-        Matrix4f rotationMatrix = new Matrix4f().initRotation(rotation.getX(), rotation.getY(), rotation.getZ());
-        Matrix4f scaleMatrix = new Matrix4f().initScale(scale.getX(), scale.getY(), scale.getZ());
-
-        return  translationMatrix.mul(rotationMatrix.mul(scaleMatrix));
+        Matrix4f matrix = new Matrix4f();
+        matrix.translate(translation);
+        matrix.rotate(rotation.getX(), rotation.getY(), rotation.getZ());
+        matrix.scale(scale);
+        return matrix;
     }
 
     public Vector3f getTranslation() {

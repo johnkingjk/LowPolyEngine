@@ -1,7 +1,7 @@
 package engine.math;
 
 /**
- * @author Gugu42
+ * @author johnking
  */
 public class Matrix4f {
 
@@ -9,9 +9,10 @@ public class Matrix4f {
 
     public Matrix4f() {
         m = new float[4][4];
+        this.identity();
     }
 
-    public Matrix4f initIdentiy() {
+    public Matrix4f identity() {
         m[0][0] = 1;
         m[0][1] = 0;
         m[0][2] = 0;
@@ -32,114 +33,89 @@ public class Matrix4f {
         return this;
     }
 
-    public Matrix4f initTranslation(float x, float y, float z) {
-        m[0][0] = 1;
-        m[0][1] = 0;
-        m[0][2] = 0;
-        m[0][3] = x;
-        m[1][0] = 0;
-        m[1][1] = 1;
-        m[1][2] = 0;
-        m[1][3] = y;
-        m[2][0] = 0;
-        m[2][1] = 0;
-        m[2][2] = 1;
-        m[2][3] = z;
-        m[3][0] = 0;
-        m[3][1] = 0;
-        m[3][2] = 0;
-        m[3][3] = 1;
+    public Matrix4f translate(Vector3f translation) {
+        m[3][0] += m[0][0] * translation.getX() + m[1][0] * translation.getY() + m[2][0] * translation.getZ();
+        m[3][0] += m[0][1] * translation.getX() + m[1][1] * translation.getY() + m[2][1] * translation.getZ();
+        m[3][0] += m[0][2] * translation.getX() + m[1][2] * translation.getY() + m[2][2] * translation.getZ();
+        m[3][0] += m[0][3] * translation.getX() + m[1][3] * translation.getY() + m[2][3] * translation.getZ();
 
         return this;
     }
 
-    public Matrix4f initRotation(float x, float y, float z) {
-        Matrix4f rx = new Matrix4f();
-        Matrix4f ry = new Matrix4f();
-        Matrix4f rz = new Matrix4f();
+    public Matrix4f rotate(float rx, float ry, float rz) {
+        float sinX = (float) Math.sin(rx);
+        float cosX = (float) Math.cos(rx);
+        float sinY = (float) Math.sin(ry);
+        float cosY = (float) Math.cos(ry);
+        float sinZ = (float) Math.sin(rz);
+        float cosZ = (float) Math.cos(rz);
 
-        x = (float) Math.toRadians(x);
-        y = (float) Math.toRadians(y);
-        z = (float) Math.toRadians(z);
+        float[][] t = new float[4][4];
 
-        rz.m[0][0] = (float) Math.cos(z);
-        rz.m[0][1] = -(float) Math.sin(z);
-        rz.m[0][2] = 0;
-        rz.m[0][3] = 0;
-        rz.m[1][0] = (float) Math.sin(z);
-        rz.m[1][1] = (float) Math.cos(z);
-        rz.m[1][2] = 0;
-        rz.m[1][3] = 0;
-        rz.m[2][0] = 0;
-        rz.m[2][1] = 0;
-        rz.m[2][2] = 1;
-        rz.m[2][3] = 0;
-        rz.m[3][0] = 0;
-        rz.m[3][1] = 0;
-        rz.m[3][2] = 0;
-        rz.m[3][3] = 1;
+        //x rotation
+        this.copyTo(t);
+        m[1][0] = t[1][0] * cosX + t[2][0] * sinX;
+        m[1][1] = t[1][1] * cosX + t[2][1] * sinX;
+        m[1][2] = t[1][2] * cosX + t[2][2] * sinX;
+        m[1][3] = t[1][3] * cosX + t[2][3] * sinX;
+        m[2][0] = t[1][0] * (-sinX) + t[2][0] * cosX;
+        m[2][1] = t[1][1] * (-sinX) + t[2][1] * cosX;
+        m[2][2] = t[1][2] * (-sinX) + t[2][2] * cosX;
+        m[2][3] = t[1][3] * (-sinX) + t[2][3] * cosX;
 
-        rx.m[0][0] = 1;
-        rx.m[0][1] = 0;
-        rx.m[0][2] = 0;
-        rx.m[0][3] = 0;
-        rx.m[1][0] = 0;
-        rx.m[1][1] = (float) Math.cos(x);
-        rx.m[1][2] = -(float) Math.sin(x);
-        rx.m[1][3] = 0;
-        rx.m[2][0] = 0;
-        rx.m[2][1] = (float) Math.sin(x);
-        rx.m[2][2] = (float) Math.cos(x);
-        rx.m[2][3] = 0;
-        rx.m[3][0] = 0;
-        rx.m[3][1] = 0;
-        rx.m[3][2] = 0;
-        rx.m[3][3] = 1;
+        //y rotation
+        this.copyTo(t);
+        m[0][0] = t[0][0] * cosY + t[2][0] * (-sinY);
+        m[0][1] = t[0][1] * cosY + t[2][1] * (-sinY);
+        m[0][2] = t[0][2] * cosY + t[2][2] * (-sinY);
+        m[0][3] = t[0][3] * cosY + t[2][3] * (-sinY);
+        m[2][0] = t[0][0] * sinY + t[2][0] * cosY;
+        m[2][1] = t[0][1] * sinY + t[2][1] * cosY;
+        m[2][2] = t[0][2] * sinY + t[2][2] * cosY;
+        m[2][3] = t[0][3] * sinY + t[2][3] * cosY;
 
-        ry.m[0][0] = (float) Math.cos(y);
-        ry.m[0][1] = 0;
-        ry.m[0][2] = -(float) Math.sin(y);
-        ry.m[0][3] = 0;
-        ry.m[1][0] = 0;
-        ry.m[1][1] = 1;
-        ry.m[1][2] = 0;
-        ry.m[1][3] = 0;
-        ry.m[2][0] = (float) Math.sin(y);
-        ry.m[2][1] = 0;
-        ry.m[2][2] = (float) Math.cos(y);
-        ry.m[2][3] = 0;
-        ry.m[3][0] = 0;
-        ry.m[3][1] = 0;
-        ry.m[3][2] = 0;
-        ry.m[3][3] = 1;
-
-        m = rz.mul(ry.mul(rx)).getM();
+        //z rotation
+        this.copyTo(t);
+        m[0][0] = t[0][0] * cosZ + t[1][0] * sinZ;
+        m[0][1] = t[0][1] * cosZ + t[1][1] * sinZ;
+        m[0][2] = t[0][2] * cosZ + t[1][2] * sinZ;
+        m[0][3] = t[0][3] * cosZ + t[1][3] * sinZ;
+        m[1][0] = t[0][0] * (-sinZ) + t[1][0] * cosZ;
+        m[1][1] = t[0][1] * (-sinZ) + t[1][1] * cosZ;
+        m[1][2] = t[0][2] * (-sinZ) + t[1][2] * cosZ;
+        m[1][3] = t[0][3] * (-sinZ) + t[1][3] * cosZ;
 
         return this;
     }
 
-    public Matrix4f initScale(float x, float y, float z) {
-        m[0][0] = x;
-        m[0][1] = 0;
-        m[0][2] = 0;
-        m[0][3] = 0;
-        m[1][0] = 0;
-        m[1][1] = y;
-        m[1][2] = 0;
-        m[1][3] = 0;
-        m[2][0] = 0;
-        m[2][1] = 0;
-        m[2][2] = z;
-        m[2][3] = 0;
-        m[3][0] = 0;
-        m[3][1] = 0;
-        m[3][2] = 0;
-        m[3][3] = 1;
+    public void copyTo(float[][] matrix) {
+        for(int x = 0; x < 4; x++) {
+            for(int y = 0; y < 4; y++) {
+                matrix[x][y] = m[x][y];
+            }
+        }
+    }
+
+    public Matrix4f scale(Vector3f scale) {
+        m[0][0] *= scale.getX();
+        m[0][1] *= scale.getX();
+        m[0][2] *= scale.getX();
+        m[0][3] *= scale.getX();
+
+        m[1][0] *= scale.getY();
+        m[1][1] *= scale.getY();
+        m[1][2] *= scale.getY();
+        m[1][3] *= scale.getY();
+
+        m[2][0] *= scale.getZ();
+        m[2][1] *= scale.getZ();
+        m[2][2] *= scale.getZ();
+        m[2][3] *= scale.getZ();
 
         return this;
     }
 
-    public Matrix4f initProjection(float fov, float width, float height, float zNear, float zFar) {
+    public Matrix4f setProjection(float fov, float width, float height, float zNear, float zFar) {
         float ar = width / height;
         float tanHalfFOV = (float) Math.tan(Math.toRadians(fov / 2));
         float zRange = zNear - zFar;
@@ -164,7 +140,7 @@ public class Matrix4f {
         return this;
     }
 
-    public Matrix4f initCamera(Vector3f forward, Vector3f up) {
+    public Matrix4f setCamera(Vector3f forward, Vector3f up) {
         Vector3f f = forward;
         f.normalized();
 
