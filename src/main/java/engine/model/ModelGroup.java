@@ -5,13 +5,13 @@ import engine.texture.Material;
 /**
  * Created by Marco on 22.12.2014.
  */
-public class ModelPart {
+public class ModelGroup {
 
     private Material material;
     private int indexStart;
     private int indexCount;
 
-    public ModelPart(Material material, int indexStart) {
+    public ModelGroup(Material material, int indexStart) {
         this.material = material;
         this.indexStart = indexStart;
     }

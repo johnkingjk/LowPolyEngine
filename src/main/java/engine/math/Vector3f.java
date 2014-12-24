@@ -123,4 +123,15 @@ public class Vector3f {
         this.z = z;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if(o == null) {
+            return false;
+        }
+        if(!(o instanceof Vector3f)) {
+            return false;
+        }
+        Vector3f other = (Vector3f) o;
+        return other.x == this.x && other.y == this.y && other.z == z;
+    }
 }

@@ -1,5 +1,7 @@
 package engine.core;
 
+import engine.model.Model;
+import engine.model.Vertex;
 import engine.texture.Texture;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
@@ -11,6 +13,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
+import java.util.Vector;
 
 /**
  * Created by Marco on 23.12.2014.
@@ -62,6 +65,11 @@ public class OpenGLLoader implements Unloadable {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public int loadToVAO(Vertex[] vertices, int[] indices) {
+        //TODO : load to vao
+        return -1;
     }
 
     @Override

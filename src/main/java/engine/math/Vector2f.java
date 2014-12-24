@@ -90,4 +90,15 @@ public class Vector2f {
         this.y = y;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if(o == null) {
+            return false;
+        }
+        if(!(o instanceof Vector2f)) {
+            return false;
+        }
+        Vector2f other = (Vector2f) o;
+        return other.x == this.x && other.y == this.y;
+    }
 }

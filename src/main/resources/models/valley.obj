@@ -1,6 +1,6 @@
 # Blender v2.72 (sub 0) OBJ File: 'bigvalley2.blend'
 # www.blender.org
-mtllib bigvalley2.mtl
+mtllib valley.mtl
 o Cube_Cube.005
 v 14.412589 0.329388 -3.594019
 v 14.412589 0.329388 -3.692978
