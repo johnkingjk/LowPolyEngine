@@ -1,5 +1,7 @@
 package engine.math;
 
+import java.nio.FloatBuffer;
+
 /**
  * @author johnking
  */
@@ -179,6 +181,14 @@ public class Matrix4f {
         for(int x = 0; x < 4; x++) {
             for(int y = 0; y < 4; y++) {
                 matrix[x][y] = m[x][y];
+            }
+        }
+    }
+
+    public void store(FloatBuffer buffer) {
+        for(int x = 0; x < 4; x++) {
+            for(int y = 0; y < 4; y++) {
+                buffer.put(m[x][y]);
             }
         }
     }
