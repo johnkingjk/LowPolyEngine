@@ -8,18 +8,18 @@ import engine.math.Vector3f;
  */
 public class Vertex {
 
-    private Vector3f location;
+    private Vector3f position;
     private Vector3f normal;
     private Vector2f texture;
 
     public Vertex(Vector3f location, Vector3f normal, Vector2f texture) {
-        this.location = location;
+        this.position = location;
         this.normal = normal;
         this.texture = texture;
     }
 
-    public Vector3f getLocation() {
-        return location;
+    public Vector3f getPosition() {
+        return position;
     }
 
     public Vector3f getNormal() {
@@ -30,8 +30,8 @@ public class Vertex {
         return texture;
     }
 
-    public boolean equals(Vector3f location, Vector3f normal, Vector2f texture) {
-        if(this.location == location || (this.location != null && this.location.equals(location))) {
+    public boolean equals(Vector3f position, Vector3f normal, Vector2f texture) {
+        if(this.position == position || (this.position != null && this.position.equals(position))) {
             if(this.normal == normal || (this.normal != null && this.normal.equals(normal))) {
                 if(this.texture == texture || (this.texture != null && this.texture.equals(texture))) {
                     return true;
