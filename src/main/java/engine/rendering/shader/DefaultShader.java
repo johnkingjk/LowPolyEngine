@@ -6,15 +6,15 @@ import engine.math.Vector3f;
 /**
  * Created by Marco on 24.12.2014.
  */
-public class NormalShader extends ShaderProgram {
+public class DefaultShader extends ShaderProgram {
 
     private int location_transformationMatrix;
     private int location_projectionMatrix;
     private int location_viewMatrix;
     private int location_colour;
 
-    public NormalShader() {
-        super("src/main/resources/shader/normal");
+    public DefaultShader() {
+        super("src/main/resources/shader/default");
     }
 
     @Override

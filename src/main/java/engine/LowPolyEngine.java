@@ -6,7 +6,7 @@ import engine.math.Vector3f;
 import engine.rendering.model.Model;
 import engine.rendering.model.ModelGroup;
 import engine.rendering.model.ModelLoader;
-import engine.rendering.shader.NormalShader;
+import engine.rendering.shader.DefaultShader;
 import engine.transform.Camera;
 import engine.transform.Transform;
 import org.lwjgl.opengl.*;
@@ -28,7 +28,7 @@ public class LowPolyEngine {
         );
 
         OpenGLLoader loader = new OpenGLLoader();
-        NormalShader shader = new NormalShader();
+        DefaultShader shader = new DefaultShader();
         ModelLoader modelLoader = new ModelLoader();
 
         Model mountain = modelLoader.readObjectFile("src/main/resources/models/mountain.obj", loader);
