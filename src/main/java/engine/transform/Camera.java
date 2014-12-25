@@ -1,5 +1,6 @@
 package engine.transform;
 
+import engine.math.Matrix4f;
 import engine.math.Vector3f;
 import org.lwjgl.input.Mouse;
 
@@ -56,5 +57,9 @@ public class Camera {
 
     public void setYaw(float yaw) {
         this.yaw = yaw;
+    }
+
+    public Matrix4f getViewMatrix() {
+        return new Matrix4f().setCamera(this);
     }
 }

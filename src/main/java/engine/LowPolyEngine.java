@@ -61,7 +61,7 @@ public class LowPolyEngine {
 
             shader.start();
             shader.setTransformationMatrix(transform_mountain.getTransformation());
-            shader.setViewMatrix(new Matrix4f().setCamera(camera));
+            shader.setViewMatrix(camera.getViewMatrix());
             GL30.glBindVertexArray(mountain.getVaoID());
             GL20.glEnableVertexAttribArray(0);
             GL20.glEnableVertexAttribArray(1);
@@ -78,7 +78,6 @@ public class LowPolyEngine {
             GL30.glBindVertexArray(0);
 
             shader.setTransformationMatrix(transform_bigvalley.getTransformation());
-            shader.setViewMatrix(new Matrix4f().setCamera(camera));
             GL30.glBindVertexArray(bigvalley.getVaoID());
             GL20.glEnableVertexAttribArray(0);
             GL20.glEnableVertexAttribArray(1);
