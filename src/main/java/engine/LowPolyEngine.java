@@ -40,8 +40,8 @@ public class LowPolyEngine {
         transform_bigvalley.setTranslation(new Vector3f(0, 0, 0));
         transform_bigvalley.setRotation(new Vector3f(0, 0, 0));
 
-        //GL11.glEnable(GL11.GL_CULL_FACE);
-        //GL11.glCullFace(GL11.GL_BACK);
+        GL11.glEnable(GL11.GL_CULL_FACE);
+        GL11.glCullFace(GL11.GL_BACK);
         GL11.glEnable(GL11.GL_DEPTH_TEST);
         GL11.glClearColor(0.5f, 0.5f, 0.5f, 1);
 
