@@ -28,7 +28,7 @@ public class ModelGroup {
         return indexCount;
     }
 
-    public void addIndex() {
-        indexCount++;
+    public void addTriangle() {
+        indexCount += 3;
     }
 }

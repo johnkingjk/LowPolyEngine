@@ -77,6 +77,16 @@ public class ModelLoader {
                         tempTextures.add(texture);
                         continue;
                     case "f" : //handle index
+
+                        Vector3i baseIndex = readIndex(data[1]);
+                        for(int i = 0; i < data.length - 3; i++) {
+                            tempIndices.add(baseIndex);
+                            tempIndices.add(readIndex(data[i + 2]));
+                            tempIndices.add(readIndex(data[i + 3]));
+                            currentGroup.addTriangle();
+                        }
+
+                        /*
                         for(int i = 0; i < 3; i++) {
                             String[] indexData = data[i + 1].split("/");
                             int locationIndex = Integer.parseInt(indexData[0]) - 1; //- 1 because the obj index are starting at 1
@@ -85,6 +95,8 @@ public class ModelLoader {
                             tempIndices.add(new Vector3i(locationIndex, textureIndex, normalIndex));
                             currentGroup.addIndex();
                         }
+                        */
+
                         /*
                         for(int i = 0; i < 3; i++) {
                             String[] indexData = data[i + 1].split("/");
@@ -172,6 +184,14 @@ public class ModelLoader {
             }
         }
         return null;
+    }
+
+    private Vector3i readIndex(String index) {
+        String[] indexData = index.split("/");
+        int locationIndex = Integer.parseInt(indexData[0]) - 1; //- 1 because the obj index are starting at 1
+        int textureIndex = (indexData.length > 1 && indexData[1] != null && !indexData[1].equals("")) ? Integer.parseInt(indexData[1]) - 1 : -1;
+        int normalIndex = (indexData.length > 2 && indexData[2] != null && !indexData[2].equals("")) ? Integer.parseInt(indexData[2]) - 1 : -1;
+        return new Vector3i(locationIndex, textureIndex, normalIndex);
     }
 
     /*
