@@ -69,7 +69,7 @@ public class LowPolyEngine {
 
             for(ModelGroup group : mountain.getParts()) {
                 shader.setColour(group.getMaterial().getDiffuseColor());
-                GL32.glDrawElementsBaseVertex(GL11.GL_TRIANGLES, group.getIndexCount(), GL11.GL_UNSIGNED_INT, group.getIndexStart() * 4, 0);
+                GL11.glDrawElements(GL11.GL_TRIANGLES, group.getIndexCount(), GL11.GL_UNSIGNED_INT, group.getIndexStart() * 4);
             }
 
             GL20.glDisableVertexAttribArray(0);
