@@ -1,6 +1,7 @@
 package engine.transform;
 
 import engine.math.Vector3f;
+import org.lwjgl.input.Mouse;
 
 /**
  * Copyright by michidk
@@ -22,6 +23,15 @@ public class Camera {
         this.position = position;
         this.pitch = pitch;
         this.yaw = yaw;
+    }
+
+    public void update() {
+        if(Mouse.isButtonDown(0)) {
+            pitch -= Mouse.getDY();
+            pitch %= 360;
+            yaw -= Mouse.getDX();
+            yaw %= 360;
+        }
     }
 
     public Vector3f getPosition() {

@@ -40,15 +40,19 @@ public class LowPolyEngine {
         GL11.glEnable(GL11.GL_DEPTH_TEST);
         GL11.glClearColor(0.5f, 0.5f, 0.5f, 1);
 
-        Camera camera = new Camera(new Vector3f(0, 0, 0), 0, 0);
+        Camera camera = new Camera(new Vector3f(0, 5, -10), 0, 0);
 
         Matrix4f projectionMatrix = new Matrix4f().setProjection(70, Display.getWidth(), Display.getHeight(), 0.1f, 1000.0f);
         shader.start();
         shader.setProjectionMatrix(projectionMatrix);
         shader.stop();
 
+        //GL11.glPolygonMode(GL11.GL_FRONT_AND_BACK, GL11.GL_LINE);
+
         while(!Display.isCloseRequested()) {
             GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
+
+            camera.update();
 
             shader.start();
             shader.setTransformationMatrix(transform.getTransformation());

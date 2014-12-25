@@ -1,6 +1,7 @@
 package engine.math;
 
 import engine.transform.Camera;
+import org.lwjgl.opengl.Display;
 
 import java.nio.FloatBuffer;
 
@@ -112,25 +113,16 @@ public class Matrix4f {
     }
 
     public Matrix4f setProjection(float fov, float width, float height, float zNear, float zFar) {
-        float ar = width / height;
-        float tanHalfFOV = (float) Math.tan(Math.toRadians(fov / 2));
-        float zRange = zNear - zFar;
+        float aspectRatio = width / height;
+        float y_scale = (float) (1f / Math.tan(Math.toRadians(fov / 2))) * aspectRatio;
+        float x_scale = y_scale /aspectRatio;
+        float frustum_length = zFar - zNear;
 
-        m[0][0] = 1.0f / (tanHalfFOV * ar);
-        m[0][1] = 0;
-        m[0][2] = 0;
-        m[0][3] = 0;
-        m[1][0] = 0;
-        m[1][1] = 1.0f / tanHalfFOV;
-        m[1][2] = 0;
-        m[1][3] = 0;
-        m[2][0] = 0;
-        m[2][1] = 0;
-        m[2][2] = (-zNear - zFar) / zRange;
-        m[2][3] = 2 * zFar * zNear / zRange;
-        m[3][0] = 0;
-        m[3][1] = 0;
-        m[3][2] = 1;
+        m[0][0] = x_scale;
+        m[1][1] = y_scale;
+        m[2][2] = -((zFar + zNear) / frustum_length);
+        m[2][3] = -1;
+        m[3][2] = -(2 * zNear * zFar / frustum_length);
         m[3][3] = 0;
 
         return this;
