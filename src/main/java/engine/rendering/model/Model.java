@@ -6,9 +6,9 @@ package engine.rendering.model;
 public class Model {
 
     private int vaoID;
-    private ModelGroup[] parts;
+    private ModelPart[] parts;
 
-    public Model(int vaoID, ModelGroup[] parts) {
+    public Model(int vaoID, ModelPart[] parts) {
         this.vaoID = vaoID;
         this.parts = parts;
     }
@@ -17,7 +17,7 @@ public class Model {
         return vaoID;
     }
 
-    public ModelGroup[] getParts() {
+    public ModelPart[] getParts() {
         return parts;
     }
 }

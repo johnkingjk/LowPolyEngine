@@ -6,8 +6,9 @@ import engine.rendering.OpenGLLoader;
 import engine.math.Matrix4f;
 import engine.math.Vector3f;
 import engine.rendering.model.Model;
-import engine.rendering.model.ModelGroup;
+import engine.rendering.model.RenderGroup;
 import engine.rendering.model.ModelLoader;
+import engine.rendering.model.ModelPart;
 import engine.rendering.shader.DefaultShader;
 import engine.transform.Camera;
 import engine.transform.Transform;
@@ -73,9 +74,11 @@ public class LowPolyEngine {
             GL20.glEnableVertexAttribArray(1);
             GL20.glEnableVertexAttribArray(2);
 
-            for(ModelGroup group : mountain.getParts()) {
-                shader.setColour(group.getMaterial().getDiffuseColor());
-                GL11.glDrawElements(GL11.GL_TRIANGLES, group.getIndexCount(), GL11.GL_UNSIGNED_INT, group.getIndexStart() * 4);
+            for(ModelPart part : mountain.getParts()) {
+                for(RenderGroup group : part.getGroups()) {
+                    shader.setColour(group.getMaterial().getDiffuseColor());
+                    GL11.glDrawElements(GL11.GL_TRIANGLES, group.getIndexCount(), GL11.GL_UNSIGNED_INT, group.getIndexStart() * 4);
+                }
             }
 
             GL20.glDisableVertexAttribArray(0);
@@ -89,9 +92,11 @@ public class LowPolyEngine {
             GL20.glEnableVertexAttribArray(1);
             GL20.glEnableVertexAttribArray(2);
 
-            for(ModelGroup group : bigvalley.getParts()) {
-                shader.setColour(group.getMaterial().getDiffuseColor());
-                GL32.glDrawElementsBaseVertex(GL11.GL_TRIANGLES, group.getIndexCount(), GL11.GL_UNSIGNED_INT, group.getIndexStart() * 4, 0);
+            for(ModelPart part : bigvalley.getParts()) {
+                for(RenderGroup group : part.getGroups()) {
+                    shader.setColour(group.getMaterial().getDiffuseColor());
+                    GL32.glDrawElementsBaseVertex(GL11.GL_TRIANGLES, group.getIndexCount(), GL11.GL_UNSIGNED_INT, group.getIndexStart() * 4, 0);
+                }
             }
 
             GL20.glDisableVertexAttribArray(0);
