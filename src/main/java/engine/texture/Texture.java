@@ -1,4 +1,4 @@
-package engine.core.texture;
+package engine.texture;
 
 /**
  * Created by Marco on 23.12.2014.

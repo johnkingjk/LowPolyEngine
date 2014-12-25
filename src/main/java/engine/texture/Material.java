@@ -1,4 +1,4 @@
-package engine.core.texture;
+package engine.texture;
 
 import engine.math.Vector3f;
 

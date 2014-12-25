@@ -1,9 +1,9 @@
-package engine.core;
+package engine.misc;
 
 import engine.math.Vector2f;
 import engine.math.Vector3f;
-import engine.core.model.Vertex;
-import engine.core.texture.Texture;
+import engine.model.Vertex;
+import engine.texture.Texture;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.*;
 
