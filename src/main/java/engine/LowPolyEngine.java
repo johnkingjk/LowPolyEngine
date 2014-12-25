@@ -1,12 +1,12 @@
 package engine;
 
-import engine.misc.OpenGLLoader;
+import engine.rendering.OpenGLLoader;
 import engine.math.Matrix4f;
 import engine.math.Vector3f;
-import engine.model.Model;
-import engine.model.ModelGroup;
-import engine.model.ModelLoader;
-import engine.shader.NormalShader;
+import engine.rendering.model.Model;
+import engine.rendering.model.ModelGroup;
+import engine.rendering.model.ModelLoader;
+import engine.rendering.shader.NormalShader;
 import engine.transform.Camera;
 import engine.transform.Transform;
 import org.lwjgl.opengl.*;
