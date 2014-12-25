@@ -1,11 +1,11 @@
-package engine.model;
+package engine.core.model;
 
 import engine.core.OpenGLLoader;
 import engine.math.Vector2f;
 import engine.math.Vector3f;
 import engine.math.Vector3i;
-import engine.texture.Material;
-import engine.texture.Texture;
+import engine.core.texture.Material;
+import engine.core.texture.Texture;
 
 import java.io.BufferedReader;
 import java.io.FileReader;

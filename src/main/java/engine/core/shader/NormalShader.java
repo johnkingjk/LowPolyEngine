@@ -1,4 +1,4 @@
-package engine.shader;
+package engine.core.shader;
 
 import engine.math.Matrix4f;
 import engine.math.Vector3f;

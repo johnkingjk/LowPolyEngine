@@ -1,4 +1,4 @@
-package engine.model;
+package engine.core.model;
 
 /**
  * Created by Marco on 22.12.2014.

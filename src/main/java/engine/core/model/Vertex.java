@@ -1,4 +1,4 @@
-package engine.model;
+package engine.core.model;
 
 import engine.math.Vector2f;
 import engine.math.Vector3f;

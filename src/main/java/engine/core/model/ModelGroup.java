@@ -1,6 +1,6 @@
-package engine.model;
+package engine.core.model;
 
-import engine.texture.Material;
+import engine.core.texture.Material;
 
 /**
  * Created by Marco on 22.12.2014.
