@@ -10,6 +10,7 @@ public class NormalShader extends ShaderProgram {
 
     private int location_transformationMatrix;
     private int location_projectionMatrix;
+    private int location_viewMatrix;
     private int location_colour;
 
     public NormalShader() {
@@ -27,6 +28,7 @@ public class NormalShader extends ShaderProgram {
     public void getAllUniformLocations() {
         location_transformationMatrix = super.getUniformLocation("transformationMatrix");
         location_projectionMatrix = super.getUniformLocation("projectionMatrix");
+        location_viewMatrix = super.getUniformLocation("viewMatrix");
         location_colour = super.getUniformLocation("colour");
     }
 
@@ -40,5 +42,9 @@ public class NormalShader extends ShaderProgram {
 
     public void setTransformationMatrix(Matrix4f matrix) {
         super.loadMatrix(location_transformationMatrix, matrix);
+    }
+
+    public void setViewMatrix(Matrix4f matrix) {
+        super.loadMatrix(location_viewMatrix, matrix);
     }
 }

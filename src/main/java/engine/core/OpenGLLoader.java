@@ -86,6 +86,10 @@ public class OpenGLLoader implements Unloadable {
     private float[] extractPositions(Vertex[] vertices) {
         float[] positions = new float[vertices.length * 3];
         for(int i = 0; i < vertices.length; i++) {
+            if(vertices[i] == null) {
+                System.out.println("missing vertex " + i + " " + vertices.length);
+                continue;
+            }
             Vector3f position = vertices[i].getPosition();
             positions[i * 3] = position.getX();
             positions[i * 3 + 1] = position.getY();
@@ -97,6 +101,9 @@ public class OpenGLLoader implements Unloadable {
     private float[] extractTextures(Vertex[] vertices) {
         float[] textures = new float[vertices.length * 2];
         for(int i = 0; i < vertices.length; i++) {
+            if(vertices[i] == null) {
+                continue;
+            }
             Vector2f texture = vertices[i].getTexture() == null ? new Vector2f(0, 0) : vertices[i].getTexture();
             textures[i * 2] = texture.getX();
             textures[i * 2 + 1] = texture.getY();
@@ -107,6 +114,9 @@ public class OpenGLLoader implements Unloadable {
     private float[] extractNormals(Vertex[] vertices) {
         float[] normals = new float[vertices.length * 3];
         for(int i = 0; i < vertices.length; i++) {
+            if(vertices[i] == null) {
+                continue;
+            }
             Vector3f normal = vertices[i].getNormal() == null ? new Vector3f(0, 0, 0) : vertices[i].getNormal();
             normals[i * 3] = normal.getX();
             normals[i * 3 + 1] = normal.getY();

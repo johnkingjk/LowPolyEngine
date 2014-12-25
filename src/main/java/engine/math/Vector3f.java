@@ -58,6 +58,10 @@ public class Vector3f {
         return this;
     }
 
+    public Vector3f negate() {
+        return new Vector3f(-x, -y, -z);
+    }
+
     public Vector3f add(Vector3f r) {
         return new Vector3f(x + r.getX(), y + r.getY(), z + r.getZ());
     }

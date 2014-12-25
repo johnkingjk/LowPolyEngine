@@ -68,11 +68,11 @@ public class ModelLoader {
                         Vector3f location = new Vector3f(Float.parseFloat(data[1]), Float.parseFloat(data[2]), Float.parseFloat(data[3]));
                         tempLocations.add(location);
                         continue;
-                    case "vt" : //handle texture
+                    case "vn" : //handle texture
                         Vector3f normal = new Vector3f(Float.parseFloat(data[1]), Float.parseFloat(data[2]), Float.parseFloat(data[3]));
                         tempNormals.add(normal);
                         continue;
-                    case "vn" : //handle normal
+                    case "vt" : //handle normal
                         Vector2f texture = new Vector2f(Float.parseFloat(data[1]), Float.parseFloat(data[2]));
                         tempTextures.add(texture);
                         continue;
@@ -124,7 +124,7 @@ public class ModelLoader {
 
             //transform data into vertex format
             int nextVertexIndex = tempLocations.size();
-            vertices.ensureCapacity(nextVertexIndex);
+            vertices.setSize(nextVertexIndex);
 
             for(Vector3i index : tempIndices) {
                 Vector3f location = tempLocations.get(index.getX());
@@ -139,7 +139,7 @@ public class ModelLoader {
                 } else if (stored.equals(location, normal, texture)) {
                     indices.add(index.getX());
                 } else {
-                    vertices.ensureCapacity(nextVertexIndex + 1);
+                    vertices.setSize(nextVertexIndex + 1);
                     vertices.set(nextVertexIndex, new Vertex(location, normal, texture));
                     indices.add(nextVertexIndex++);
                 }

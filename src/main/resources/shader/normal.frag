@@ -1,6 +1,6 @@
 #version 400 core
 
-out vec4 out_Color
+out vec4 out_Color;
 
 uniform vec3 colour;
 
