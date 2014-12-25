@@ -3,20 +3,18 @@ package engine.math;
 /**
  * Created by Marco on 24.12.2014.
  */
-public class Vector3i {
+public class Vector2i {
 
     private int x;
     private int y;
-    private int z;
 
-    public Vector3i(int x, int y, int z) {
+    public Vector2i(int x, int y) {
         this.x = x;
         this.y = y;
-        this.z = z;
     }
 
-    public static Vector3i zero() {
-        return new Vector3i(0, 0, 0);
+    public static Vector2i zero() {
+        return new Vector2i(0, 0);
     }
 
     public int getX() {
@@ -35,11 +33,4 @@ public class Vector3i {
         this.y = y;
     }
 
-    public int getZ() {
-        return z;
-    }
-
-    public void setZ(int z) {
-        this.z = z;
-    }
 }

@@ -98,6 +98,10 @@ public class Vector3f {
         return new Vector3f(Math.abs(x), Math.abs(y), Math.abs(z));
     }
 
+    public static Vector3f zero() {
+        return new Vector3f(0, 0, 0);
+    }
+
     public String toString()
     {
         return "(" + x + " " + y + " " + z + ")";
