@@ -33,6 +33,8 @@ public class LowPolyEngine {
 
         InputManager.init();
 
+        new TestListener();
+
         OpenGLLoader loader = new OpenGLLoader();
         DefaultShader shader = new DefaultShader();
         ModelLoader modelLoader = new ModelLoader();

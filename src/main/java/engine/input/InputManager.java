@@ -1,5 +1,9 @@
 package engine.input;
 
+import engine.event.EventManager;
+import engine.event.events.KeyPressedEvent;
+import engine.event.events.MousePressedEvent;
+import engine.event.events.MouseWheelEvent;
 import engine.math.Vector2i;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
@@ -38,6 +42,25 @@ public class InputManager {
         mouseDeltaPos.setY(Mouse.getDY());
 
         mouseWeel = Mouse.getDWheel();
+
+        //call events
+        while (Mouse.next()) {
+            if (Mouse.getEventButtonState()) {
+                EventManager.callEvent(new MousePressedEvent(Mouse.getEventButton()));
+            }
+            if (Mouse.getEventDWheel() > 0) {
+                EventManager.callEvent(new MouseWheelEvent(MouseWheelDirection.UP));
+            } else if (Mouse.getEventDWheel() < 0) {
+                EventManager.callEvent(new MouseWheelEvent(MouseWheelDirection.DOWN));
+            }
+        }
+
+        while (Keyboard.next()) {
+            if (Keyboard.getEventKeyState()) {
+                EventManager.callEvent(new KeyPressedEvent(Keyboard.getEventKey()));
+            }
+        }
+
     }
 
     public static boolean isKeyDown(int keyCode) {
@@ -52,16 +75,8 @@ public class InputManager {
         return Mouse.isButtonDown(mouseBtn);
     }
 
-    public static boolean isMouseDown(MouseButton mouseBtn) {
-        return isMouseDown(mouseBtn.getId());
-    }
-
     public static boolean isMouseUp(int mouseBtn) {
         return !Mouse.isButtonDown(mouseBtn);
-    }
-
-    public static boolean isMouseUp(MouseButton mouseBtn) {
-        return isMouseUp(mouseBtn.getId());
     }
 
     public static void setMousePos(Vector2i mousePos) {
