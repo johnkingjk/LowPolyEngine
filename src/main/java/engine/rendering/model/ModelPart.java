@@ -10,7 +10,7 @@ import java.util.ArrayList;
 public class ModelPart {
 
     private String name;
-    private ArrayList<RenderGroup> groups;
+    private ArrayList<ModelGroup> groups;
     private ShaderProgram program = null;
     private boolean smooth;
 
@@ -23,15 +23,15 @@ public class ModelPart {
         return name;
     }
 
-    public ArrayList<RenderGroup> getGroups() {
+    public ArrayList<ModelGroup> getGroups() {
         return groups;
     }
 
-    public ShaderProgram getProgram() {
+    public ShaderProgram getShader() {
         return program;
     }
 
-    public void setProgram(ShaderProgram program) {
+    public void setShader(ShaderProgram program) {
         this.program = program;
     }
 
@@ -44,7 +44,7 @@ public class ModelPart {
     }
 
     public boolean isEmpty() {
-        for(RenderGroup group : groups) {
+        for(ModelGroup group : groups) {
             if(group.getIndexCount() != 0) {
                 return false;
             }

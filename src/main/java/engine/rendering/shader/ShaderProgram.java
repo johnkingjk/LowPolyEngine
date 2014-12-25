@@ -3,6 +3,8 @@ package engine.rendering.shader;
 import engine.misc.Unloadable;
 import engine.math.Matrix4f;
 import engine.math.Vector3f;
+import engine.rendering.RenderGroup;
+import engine.transform.Transform;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
@@ -17,6 +19,7 @@ import java.nio.FloatBuffer;
  */
 public abstract class ShaderProgram implements Unloadable {
 
+    private String file;
     private int programID;
     private int vertexID;
     private int fragmentID;
@@ -24,6 +27,10 @@ public abstract class ShaderProgram implements Unloadable {
     private static FloatBuffer matrixBuffer = BufferUtils.createFloatBuffer(16);
 
     public ShaderProgram(String file) {
+        this.file = file;
+    }
+
+    public void init() {
         vertexID = loadShader(file + ".vert", GL20.GL_VERTEX_SHADER);
         fragmentID = loadShader(file + ".frag", GL20.GL_FRAGMENT_SHADER);
         programID = GL20.glCreateProgram();
@@ -56,6 +63,13 @@ public abstract class ShaderProgram implements Unloadable {
     public abstract void bindAttributes();
 
     public abstract void getAllUniformLocations();
+
+    public abstract void setupProjection(Matrix4f projectionMatrix);
+
+    public abstract void setupTransform(Matrix4f transformationMatrix, Matrix4f viewMatrix);
+
+    public abstract void setupGroup(RenderGroup group);
+
 
     protected int getUniformLocation(String variable) {
         return GL20.glGetUniformLocation(programID, variable);

@@ -13,17 +13,27 @@ public class Transform {
     private Vector3f rotation;
     private Vector3f scale;
 
+    private Matrix4f matrix;
+    private boolean changed;
+
     public Transform() {
         translation = new Vector3f(0, 0, 0);
         rotation = new Vector3f(0, 0, 0);
         scale = new Vector3f(1, 1, 1);
+
+        matrix = new Matrix4f();
+        changed = true;
     }
 
     public Matrix4f getTransformation() {
-        Matrix4f matrix = new Matrix4f();
-        matrix.translate(translation);
-        matrix.rotate(rotation.getX(), rotation.getY(), rotation.getZ());
-        matrix.scale(scale);
+        if(changed) {
+            matrix.identity();
+            matrix.translate(translation);
+            matrix.rotate(rotation.getX(), rotation.getY(), rotation.getZ());
+            matrix.scale(scale);
+
+            changed = false;
+        }
         return matrix;
     }
 
@@ -33,6 +43,7 @@ public class Transform {
 
     public void setTranslation(Vector3f translation) {
         this.translation = translation;
+        this.changed = true;
     }
 
     public Vector3f getRotation() {
@@ -41,6 +52,7 @@ public class Transform {
 
     public void setRotation(Vector3f rotation) {
         this.rotation = rotation;
+        this.changed = true;
     }
 
     public Vector3f getScale() {
@@ -49,5 +61,6 @@ public class Transform {
 
     public void setScale(Vector3f scale) {
         this.scale = scale;
+        this.changed = true;
     }
 }
