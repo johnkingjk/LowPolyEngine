@@ -41,14 +41,18 @@ public class DefaultShader extends ShaderProgram {
     }
 
     @Override
-    public void setupTransform(Matrix4f transformationMatrix, Matrix4f viewMatrix) {
-        this.setViewMatrix(viewMatrix);
+    public void setupTransform(Matrix4f transformationMatrix) {
         this.setTransformationMatrix(transformationMatrix);
     }
 
     @Override
     public void setupGroup(RenderGroup group) {
         this.setColour(group.getMaterial().getDiffuseColor());
+    }
+
+    @Override
+    public void setupViewMatrix(Matrix4f viewMatrix) {
+        this.setViewMatrix(viewMatrix);
     }
 
     public void setColour(Vector3f colour) {

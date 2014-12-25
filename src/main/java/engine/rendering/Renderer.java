@@ -56,25 +56,32 @@ public class Renderer implements Unloadable{
     public void render(Camera camera) {
         for(Map.Entry<Model, ArrayList<Transform>> entry : models.entrySet()) {
             Model model = entry.getKey();
+            ShaderProgram currentShader = defaultShader;
             Matrix4f viewMatrix = camera.getViewMatrix();
             prepareModel(model);
 
+            currentShader.start();
+            currentShader.setupViewMatrix(viewMatrix);
             for(ModelPart part : model.getParts()) {
-                ShaderProgram shader = part.getShader() != null ? part.getShader() : defaultShader;
-                shader.start();
-                for(Transform transform : entry.getValue()) {
-                    render(part, transform, viewMatrix, shader);
+                if(part.getShader() != null && part.getShader() != currentShader) {
+                    currentShader = part.getShader();
+                    currentShader.start();
+                    currentShader.setupViewMatrix(viewMatrix);
                 }
-                shader.stop();
+                ShaderProgram shader = part.getShader() != null ? part.getShader() : defaultShader;
+                for(Transform transform : entry.getValue()) {
+                    render(part, transform, shader);
+                }
             }
+            currentShader.stop();
 
             unbindModel();
         }
         models.clear();
     }
 
-    private void render(ModelPart part, Transform transform, Matrix4f viewMatrix, ShaderProgram shader) {
-        shader.setupTransform(transform.getTransformation(), viewMatrix);
+    private void render(ModelPart part, Transform transform, ShaderProgram shader) {
+        shader.setupTransform(transform.getTransformation());
         for(ModelGroup group : part.getGroups()) {
             shader.setupGroup(group);
             GL11.glDrawElements(GL11.GL_TRIANGLES, group.getIndexCount(), GL11.GL_UNSIGNED_INT, group.getIndexStart() * 4);

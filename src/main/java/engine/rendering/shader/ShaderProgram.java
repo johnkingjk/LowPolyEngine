@@ -66,10 +66,11 @@ public abstract class ShaderProgram implements Unloadable {
 
     public abstract void setupProjection(Matrix4f projectionMatrix);
 
-    public abstract void setupTransform(Matrix4f transformationMatrix, Matrix4f viewMatrix);
+    public abstract void setupTransform(Matrix4f transformationMatrix);
 
     public abstract void setupGroup(RenderGroup group);
 
+    public abstract void setupViewMatrix(Matrix4f viewMatrix);
 
     protected int getUniformLocation(String variable) {
         return GL20.glGetUniformLocation(programID, variable);
