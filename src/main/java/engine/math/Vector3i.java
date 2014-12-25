@@ -15,6 +15,10 @@ public class Vector3i {
         this.z = z;
     }
 
+    public static Vector3i zero() {
+        return new Vector3i(0, 0, 0);
+    }
+
     public int getX() {
         return x;
     }
