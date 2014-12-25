@@ -1,4 +1,4 @@
-package engine.core;
+package engine.misc;
 
 /**
  * Created by Marco on 23.12.2014.

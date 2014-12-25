@@ -1,6 +1,6 @@
-package engine.core.shader;
+package engine.shader;
 
-import engine.core.Unloadable;
+import engine.misc.Unloadable;
 import engine.math.Matrix4f;
 import engine.math.Vector3f;
 import org.lwjgl.BufferUtils;
