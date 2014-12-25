@@ -25,7 +25,7 @@ public class ModelLoader {
     reads the .obj file
      */
     public Model readObjectFile(String file, OpenGLLoader loader) {
-        ArrayList<ModelGroup> groups = new ArrayList<>();
+        ArrayList<ModelPart> parts = new ArrayList<>();
         Vector<Vertex> vertices = new Vector<>();
         ArrayList<Integer> indices = new ArrayList<>();
 
@@ -34,8 +34,11 @@ public class ModelLoader {
             String line;
 
             //setup temp save
-            ModelGroup currentGroup = new ModelGroup(DEFAULT_MATERIAL, 0);
-            groups.add(currentGroup);
+            RenderGroup currentGroup = new RenderGroup(DEFAULT_MATERIAL, 0);
+            ModelPart currentPart = new ModelPart("default");
+            currentPart.getGroups().add(currentGroup);
+            parts.add(currentPart);
+
             ArrayList<Vector3f> tempLocations = new ArrayList<>();
             ArrayList<Vector3f> tempNormals = new ArrayList<>();
             ArrayList<Vector2f> tempTextures = new ArrayList<>();
@@ -51,15 +54,36 @@ public class ModelLoader {
                 if(data[0].equals("mtllib")) {
                     String materialFile = file.substring(0, file.lastIndexOf("/") + 1) + data[1];
                     materials = readMaterialFile(materialFile, loader);
-                } else if (data[0].equals("usemtl")) { //activate model part
+                } else if (data[0].equals("o")) { //set model part
+                    ModelPart part = new ModelPart(data[1]);
+
+                    //check if old object is useless
+                    if(currentPart.isEmpty()) {
+                        parts.remove(currentPart);
+                    }
+
+                    //finish group
+                    if(currentGroup.getIndexCount() == 0) {
+                        currentPart.getGroups().remove(currentGroup);
+                    }
+
+                    //set new default group to new object
+                    currentGroup = new RenderGroup(DEFAULT_MATERIAL, currentGroup.getIndexStart() + currentGroup.getIndexCount());
+                    part.getGroups().add(currentGroup);
+
+                    //set model object
+                    currentPart = part;
+                    parts.add(part);
+                } else if (data[0].equals("usemtl")) { //set model part
                     Material material = getMaterial(materials, data[1]);
 
                     //check if old model part is useless
                     if(currentGroup.getIndexCount() == 0) {
-                        groups.remove(currentGroup);
+                        currentPart.getGroups().remove(currentGroup);
                     }
-                    currentGroup = new ModelGroup(material == null ? DEFAULT_MATERIAL : material, currentGroup.getIndexStart() + currentGroup.getIndexCount()); //set new material and use default if no material is found
-                    groups.add(currentGroup);
+
+                    currentGroup = new RenderGroup(material, currentGroup.getIndexStart() + currentGroup.getIndexCount()); //set new material
+                    currentPart.getGroups().add(currentGroup);
                 }
 
                 //load data
@@ -174,16 +198,18 @@ public class ModelLoader {
             buffer[i] = indices.get(i);
         }
         int vaoID = loader.loadToVAO(vertices.toArray(new Vertex[vertices.size()]), buffer);
-        return new Model(vaoID, groups.toArray(new ModelGroup[groups.size()]));
+        return new Model(vaoID, parts.toArray(new ModelPart[parts.size()]));
     }
 
     private Material getMaterial(ArrayList<Material> materials, String name) {
-        for(Material material : materials) {
-            if(material.getName().equals(name)) {
-                return material;
+        if(materials != null) {
+            for(Material material : materials) {
+                if(material.getName().equals(name)) {
+                    return material;
+                }
             }
         }
-        return null;
+        return DEFAULT_MATERIAL;
     }
 
     private Vector3i readIndex(String index) {
