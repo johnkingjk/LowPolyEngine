@@ -1,5 +1,6 @@
 package engine.transform;
 
+import engine.input.InputManager;
 import engine.math.Matrix4f;
 import engine.math.Vector3f;
 import org.lwjgl.input.Mouse;
@@ -28,9 +29,9 @@ public class Camera {
 
     public void update() {
         if(Mouse.isButtonDown(0)) {
-            pitch -= Mouse.getDY();
+            pitch -= InputManager.getMouseDeltaPos().getY();
             pitch %= 360;
-            yaw -= Mouse.getDX();
+            yaw -= InputManager.getMouseDeltaPos().getX();
             yaw %= 360;
         }
     }

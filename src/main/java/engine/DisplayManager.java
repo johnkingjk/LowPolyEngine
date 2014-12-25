@@ -14,7 +14,7 @@ public class DisplayManager {
 
     public static void create(Window window) {
         if(DisplayManager.window != null) {
-            //TODO : throw exception
+            //TODO: throw exception
             return;
         }
 
