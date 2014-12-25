@@ -31,9 +31,14 @@ public class LowPolyEngine {
         NormalShader shader = new NormalShader();
         ModelLoader modelLoader = new ModelLoader();
 
-        Model model = modelLoader.readObjectFile("src/main/resources/models/mountain.obj", loader);
-        Transform transform = new Transform();
-        transform.setTranslation(new Vector3f(0, 0, 0));
+        Model mountain = modelLoader.readObjectFile("src/main/resources/models/mountain.obj", loader);
+        Transform transform_mountain = new Transform();
+        transform_mountain.setTranslation(new Vector3f(0, 0, 0));
+
+        Model bigvalley = modelLoader.readObjectFile("src/main/resources/models/bigvalley2.obj", loader);
+        Transform transform_bigvalley = new Transform();
+        transform_bigvalley.setTranslation(new Vector3f(0, 0, 0));
+        transform_bigvalley.setRotation(new Vector3f(0, 0, 0));
 
         //GL11.glEnable(GL11.GL_CULL_FACE);
         //GL11.glCullFace(GL11.GL_BACK);
@@ -55,14 +60,14 @@ public class LowPolyEngine {
             camera.update();
 
             shader.start();
-            shader.setTransformationMatrix(transform.getTransformation());
+            shader.setTransformationMatrix(transform_mountain.getTransformation());
             shader.setViewMatrix(new Matrix4f().setCamera(camera));
-            GL30.glBindVertexArray(model.getVaoID());
+            GL30.glBindVertexArray(mountain.getVaoID());
             GL20.glEnableVertexAttribArray(0);
             GL20.glEnableVertexAttribArray(1);
             GL20.glEnableVertexAttribArray(2);
 
-            for(ModelGroup group : model.getParts()) {
+            for(ModelGroup group : mountain.getParts()) {
                 shader.setColour(group.getMaterial().getDiffuseColor());
                 GL32.glDrawElementsBaseVertex(GL11.GL_TRIANGLES, group.getIndexCount(), GL11.GL_UNSIGNED_INT, group.getIndexStart() * 4, 0);
             }
@@ -71,6 +76,24 @@ public class LowPolyEngine {
             GL20.glDisableVertexAttribArray(1);
             GL20.glDisableVertexAttribArray(2);
             GL30.glBindVertexArray(0);
+
+            shader.setTransformationMatrix(transform_bigvalley.getTransformation());
+            shader.setViewMatrix(new Matrix4f().setCamera(camera));
+            GL30.glBindVertexArray(bigvalley.getVaoID());
+            GL20.glEnableVertexAttribArray(0);
+            GL20.glEnableVertexAttribArray(1);
+            GL20.glEnableVertexAttribArray(2);
+
+            for(ModelGroup group : bigvalley.getParts()) {
+                shader.setColour(group.getMaterial().getDiffuseColor());
+                GL32.glDrawElementsBaseVertex(GL11.GL_TRIANGLES, group.getIndexCount(), GL11.GL_UNSIGNED_INT, group.getIndexStart() * 4, 0);
+            }
+
+            GL20.glDisableVertexAttribArray(0);
+            GL20.glDisableVertexAttribArray(1);
+            GL20.glDisableVertexAttribArray(2);
+            GL30.glBindVertexArray(0);
+
             shader.stop();
 
             DisplayManager.update();
