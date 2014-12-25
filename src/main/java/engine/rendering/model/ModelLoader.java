@@ -34,7 +34,7 @@ public class ModelLoader {
             String line;
 
             //setup temp save
-            RenderGroup currentGroup = new RenderGroup(DEFAULT_MATERIAL, 0);
+            ModelGroup currentGroup = new ModelGroup(DEFAULT_MATERIAL, 0);
             ModelPart currentPart = new ModelPart("default");
             currentPart.getGroups().add(currentGroup);
             parts.add(currentPart);
@@ -68,7 +68,7 @@ public class ModelLoader {
                     }
 
                     //set new default group to new object
-                    currentGroup = new RenderGroup(DEFAULT_MATERIAL, currentGroup.getIndexStart() + currentGroup.getIndexCount());
+                    currentGroup = new ModelGroup(DEFAULT_MATERIAL, currentGroup.getIndexStart() + currentGroup.getIndexCount());
                     part.getGroups().add(currentGroup);
 
                     //set model object
@@ -82,7 +82,7 @@ public class ModelLoader {
                         currentPart.getGroups().remove(currentGroup);
                     }
 
-                    currentGroup = new RenderGroup(material, currentGroup.getIndexStart() + currentGroup.getIndexCount()); //set new material
+                    currentGroup = new ModelGroup(material, currentGroup.getIndexStart() + currentGroup.getIndexCount()); //set new material
                     currentPart.getGroups().add(currentGroup);
                 }
 

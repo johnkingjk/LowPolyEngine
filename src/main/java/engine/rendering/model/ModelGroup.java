@@ -1,21 +1,23 @@
 package engine.rendering.model;
 
+import engine.rendering.RenderGroup;
 import engine.rendering.texture.Material;
 
 /**
  * Created by Marco on 22.12.2014.
  */
-public class RenderGroup {
+public class ModelGroup implements RenderGroup{
 
     private Material material;
     private int indexStart;
     private int indexCount;
 
-    public RenderGroup(Material material, int indexStart) {
+    public ModelGroup(Material material, int indexStart) {
         this.material = material;
         this.indexStart = indexStart;
     }
 
+    @Override
     public Material getMaterial() {
         return material;
     }
