@@ -32,37 +32,64 @@ public class Quaternion {
      * @author jmonkeyengine
      */
     public Quaternion(Vector3f rotation) {
-        float pitch = rotation.getX();
-        float yaw = rotation.getY();
-        float roll = rotation.getZ();
+        float xAngle = rotation.getX();
+        float yAngle = rotation.getY();
+        float zAngle = rotation.getZ();
 
         float angle;
-        float sinRoll, sinPitch, sinYaw, cosRoll, cosPitch, cosYaw;
-        angle = pitch * 0.5f;
-        sinPitch = (float) Math.sin(angle);
-        cosPitch = (float) Math.cos(angle);
-        angle = roll * 0.5f;
-        sinRoll = (float) Math.sin(angle);
-        cosRoll = (float) Math.cos(angle);
-        angle = yaw * 0.5f;
-        sinYaw = (float) Math.sin(angle);
-        cosYaw = (float) Math.cos(angle);
+        float sinY, sinZ, sinX, cosY, cosZ, cosX;
+        angle = zAngle * 0.5f;
+        sinZ = FastMath.sin(angle);
+        cosZ = FastMath.cos(angle);
+        angle = yAngle * 0.5f;
+        sinY = FastMath.sin(angle);
+        cosY = FastMath.cos(angle);
+        angle = xAngle * 0.5f;
+        sinX = FastMath.sin(angle);
+        cosX = FastMath.cos(angle);
 
         // variables used to reduce multiplication calls.
-        float cosRollXcosPitch = cosRoll * cosPitch;
-        float sinRollXsinPitch = sinRoll * sinPitch;
-        float cosRollXsinPitch = cosRoll * sinPitch;
-        float sinRollXcosPitch = sinRoll * cosPitch;
+        float cosYXcosZ = cosY * cosZ;
+        float sinYXsinZ = sinY * sinZ;
+        float cosYXsinZ = cosY * sinZ;
+        float sinYXcosZ = sinY * cosZ;
 
-        w = (cosRollXcosPitch * cosYaw - sinRollXsinPitch * sinYaw);
-        x = (cosRollXcosPitch * sinYaw + sinRollXsinPitch * cosYaw);
-        y = (sinRollXcosPitch * cosYaw + cosRollXsinPitch * sinYaw);
-        z = (cosRollXsinPitch * cosYaw - sinRollXcosPitch * sinYaw);
+        w = (cosYXcosZ * cosX - sinYXsinZ * sinX);
+        x = (cosYXcosZ * sinX + sinYXsinZ * cosX);
+        y = (sinYXcosZ * cosX + cosYXsinZ * sinX);
+        z = (cosYXsinZ * cosX - sinYXcosZ * sinX);
 
         normalize();
     }
 
     public Vector3f toAngles() {
+        Vector3f result = new Vector3f(0, 0, 0);
+
+        float sqw = w * w;
+        float sqx = x * x;
+        float sqy = y * y;
+        float sqz = z * z;
+        float unit = sqx + sqy + sqz + sqw;
+
+        float test = x * y + z * w;
+        if (test > 0.499 * unit) {
+            result.setX(0);
+            result.setY(2.0f * (float) Math.atan2(x, w));
+            result.setZ(FastMath.PI / 2.0f);
+        } else if (test < -0.499 * unit) {
+            result.setX(0);
+            result.setY(-2.0f * (float) Math.atan2(x, w));
+            result.setZ(-FastMath.PI / 2.0f);
+        } else {
+            result.setX((float) Math.atan2(2 * x * w - 2 * y * z, -sqx + sqy - sqz + sqw));
+            result.setY((float) Math.atan2(2 * y * w - 2 * x * z, sqx - sqy - sqz + sqw));
+            result.setZ((float) Math.asin(2 * test / unit));
+        }
+        return result;
+
+        /*
+        normalize();
+
         float test = x*y + z*w;
         if (test > 0.499) { // singularity at north pole
             return new Vector3f(2.0f * (float) Math.atan2(x,w), FastMath.PI / 2.0f, 0.0f);
@@ -74,6 +101,7 @@ public class Quaternion {
         double sqy = y*y;
         double sqz = z*z;
         return new Vector3f((float) Math.atan2(2*y*w - 2*x*z, 1 - 2*sqy - 2*sqz), (float) Math.asin(2*test), (float) Math.atan2(2*x*w - 2*y*z , 1 - 2*sqx - 2*sqz));
+        */
     }
 
     public Quaternion rotate(Quaternion quaternion) {

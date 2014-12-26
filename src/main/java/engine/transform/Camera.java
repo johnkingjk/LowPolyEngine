@@ -9,6 +9,8 @@ import engine.misc.Debug;
 import org.lwjgl.Sys;
 import org.lwjgl.input.Mouse;
 
+import java.util.logging.Level;
+
 /**
  * Copyright by michidk
  * Created: 22.12.2014.
@@ -20,6 +22,8 @@ public class Camera extends Transform {
     private float fov;
     private float zNear;
     private float zFar;
+
+    private float rotX, rotY;
 
     private Matrix4f viewMatrix;
     private Matrix4f projection;
@@ -38,9 +42,19 @@ public class Camera extends Transform {
 
     public void update() {
         if(Mouse.isButtonDown(MouseButton.LEFT) || Mouse.isButtonDown(MouseButton.RIGHT)) {
-            Quaternion rot = getRotation();
-            setRotation(rot.mul(new Quaternion(new Vector3f((float)Math.toDegrees(InputManager.getMouseDeltaPos().getX()), (float)Math.toDegrees(InputManager.getMouseDeltaPos().getY()), 0))));
-            Debug.Log(getRotation());
+            //rot.setX(rot.getX() + (float)Math.toRadians(InputManager.getMouseDeltaPos().getY()));
+            //rot.setY(rot.getY() + (float) Math.toRadians(InputManager.getMouseDeltaPos().getX()));
+            Vector3f angles = getRotation().toAngles();
+            //System.out.println(angles.toString());
+            angles.setX(angles.getX() + (float) Math.toRadians(InputManager.getMouseDeltaPos().getY()));
+            angles.setY(angles.getY() + (float) Math.toRadians(InputManager.getMouseDeltaPos().getX()));
+            rotX = angles.getX();
+            rotY = angles.getY();
+            recalculateViewMatrix();
+            setRotation(new Quaternion(angles));
+            //getRotation().mul(new Quaternion(new Vector3f((float) Math.toRadians(InputManager.getMouseDeltaPos().getX()), (float) Math.toRadians(InputManager.getMouseDeltaPos().getY()), 0)));
+            //recalculateViewMatrix();
+            //Debug.Log(getRotation());
             /*
             Vector3f rot = getRotation().toAngles();
             float pitch = rot.getX();
@@ -56,8 +70,8 @@ public class Camera extends Transform {
 
     public void recalculateViewMatrix() {
         Matrix4f m = new Matrix4f();
+        m.rotate(rotX, rotY, 0);
         m.translate(getTranslation().negate());
-        m.rotate(getRotation());
 
         viewMatrix = m;
     }
@@ -136,7 +150,7 @@ public class Camera extends Transform {
     public void setRotation(Quaternion rotation) {
         super.setRotation(rotation);
 
-        recalculateViewMatrix();
+        //recalculateViewMatrix();
     }
 
     @Override

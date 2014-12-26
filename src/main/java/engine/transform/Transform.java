@@ -10,9 +10,9 @@ import engine.math.Vector3f;
  */
 public class Transform {
 
-    private Vector3f translation;
-    private Quaternion rotation;
-    private Vector3f scale;
+    protected Vector3f translation;
+    protected Quaternion rotation;
+    protected Vector3f scale;
 
     private Matrix4f matrix;
     private boolean changed;
@@ -42,7 +42,7 @@ public class Transform {
         if(changed) {
             matrix.identity();
             matrix.translate(translation);
-            matrix.rotate(rotation.getX(), rotation.getY(), rotation.getZ());
+            matrix.rotate(getRotation());
             matrix.scale(scale);
 
             changed = false;

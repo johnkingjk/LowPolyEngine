@@ -74,10 +74,6 @@ public class Matrix4f {
     }
 
     public Matrix4f rotate(float rx, float ry, float rz) {
-        rx = (float) Math.toRadians(rx);
-        ry = (float) Math.toRadians(ry);
-        rz = (float) Math.toRadians(rz);
-
         float sinX = (float) Math.sin(rx);
         float cosX = (float) Math.cos(rx);
         float sinY = (float) Math.sin(ry);
