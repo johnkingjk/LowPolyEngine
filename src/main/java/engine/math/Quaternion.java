@@ -1,5 +1,7 @@
 package engine.math;
 
+import engine.misc.FastMath;
+
 /**
  * @author Gugu42
  */
@@ -62,9 +64,17 @@ public class Quaternion {
     }
 
     public Vector3f toAngles() {
-        //TODO: make dat shit @johnking
-        Vector3f angles = new Vector3f(0, 0, 0);
-        return angles;
+        float test = x*y + z*w;
+        if (test > 0.499) { // singularity at north pole
+            return new Vector3f(2.0f * (float) Math.atan2(x,w), FastMath.PI / 2.0f, 0.0f);
+        }
+        if (test < -0.499) { // singularity at south pole
+            return new Vector3f(-2.0f * (float) Math.atan2(x,w), -FastMath.PI / 2.0f, 0.0f);
+        }
+        double sqx = x*x;
+        double sqy = y*y;
+        double sqz = z*z;
+        return new Vector3f((float) Math.atan2(2*y*w - 2*x*z, 1 - 2*sqy - 2*sqz), (float) Math.asin(2*test), (float) Math.atan2(2*x*w - 2*y*z , 1 - 2*sqx - 2*sqz));
     }
 
     public Quaternion rotate(Quaternion quaternion) {
