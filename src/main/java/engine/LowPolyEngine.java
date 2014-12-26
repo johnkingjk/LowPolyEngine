@@ -2,15 +2,12 @@ package engine;
 
 import engine.input.InputManager;
 import engine.math.Quaternion;
+import engine.math.FastMath;
 import engine.rendering.OpenGLLoader;
-import engine.math.Matrix4f;
 import engine.math.Vector3f;
 import engine.rendering.Renderer;
 import engine.rendering.model.Model;
-import engine.rendering.model.ModelGroup;
 import engine.rendering.model.ModelLoader;
-import engine.rendering.model.ModelPart;
-import engine.rendering.shader.DefaultShader;
 import engine.transform.Camera;
 import engine.transform.Transform;
 import org.lwjgl.opengl.*;
@@ -43,6 +40,7 @@ public class LowPolyEngine {
         Model mountain = modelLoader.readObjectFile("src/main/resources/models/mountain.obj", loader);
         Transform transform_mountain = new Transform();
         transform_mountain.setTranslation(new Vector3f(0, 0, 0));
+        transform_mountain.setRotation(new Quaternion(new Vector3f(0, FastMath.PI, 0)));
 
         Model bigvalley = modelLoader.readObjectFile("src/main/resources/models/bigvalley2.obj", loader);
         Transform transform_bigvalley = new Transform();

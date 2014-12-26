@@ -1,7 +1,5 @@
 package engine.math;
 
-import engine.misc.FastMath;
-
 /**
  * @author Gugu42
  */
@@ -49,15 +47,15 @@ public class Quaternion {
         cosX = FastMath.cos(angle);
 
         // variables used to reduce multiplication calls.
-        float cosYXcosZ = cosY * cosZ;
-        float sinYXsinZ = sinY * sinZ;
-        float cosYXsinZ = cosY * sinZ;
-        float sinYXcosZ = sinY * cosZ;
+        float cosYxCosZ = cosY * cosZ;
+        float sinYxSinZ = sinY * sinZ;
+        float cosYxSinZ = cosY * sinZ;
+        float sinYxCosZ = sinY * cosZ;
 
-        w = (cosYXcosZ * cosX - sinYXsinZ * sinX);
-        x = (cosYXcosZ * sinX + sinYXsinZ * cosX);
-        y = (sinYXcosZ * cosX + cosYXsinZ * sinX);
-        z = (cosYXsinZ * cosX - sinYXcosZ * sinX);
+        w = (cosYxCosZ * cosX - sinYxSinZ * sinX);
+        x = (cosYxCosZ * sinX + sinYxSinZ * cosX);
+        y = (sinYxCosZ * cosX + cosYxSinZ * sinX);
+        z = (cosYxSinZ * cosX - sinYxCosZ * sinX);
 
         normalize();
     }
@@ -74,34 +72,18 @@ public class Quaternion {
         float test = x * y + z * w;
         if (test > 0.499 * unit) {
             result.setX(0);
-            result.setY(2.0f * (float) Math.atan2(x, w));
+            result.setY(2.0f * FastMath.atan2(x, w));
             result.setZ(FastMath.PI / 2.0f);
         } else if (test < -0.499 * unit) {
             result.setX(0);
-            result.setY(-2.0f * (float) Math.atan2(x, w));
+            result.setY(-2.0f * FastMath.atan2(x, w));
             result.setZ(-FastMath.PI / 2.0f);
         } else {
-            result.setX((float) Math.atan2(2 * x * w - 2 * y * z, -sqx + sqy - sqz + sqw));
-            result.setY((float) Math.atan2(2 * y * w - 2 * x * z, sqx - sqy - sqz + sqw));
-            result.setZ((float) Math.asin(2 * test / unit));
+            result.setX(FastMath.atan2(2 * x * w - 2 * y * z, -sqx + sqy - sqz + sqw));
+            result.setY(FastMath.atan2(2 * y * w - 2 * x * z, sqx - sqy - sqz + sqw));
+            result.setZ(FastMath.asin(2 * test / unit));
         }
         return result;
-
-        /*
-        normalize();
-
-        float test = x*y + z*w;
-        if (test > 0.499) { // singularity at north pole
-            return new Vector3f(2.0f * (float) Math.atan2(x,w), FastMath.PI / 2.0f, 0.0f);
-        }
-        if (test < -0.499) { // singularity at south pole
-            return new Vector3f(-2.0f * (float) Math.atan2(x,w), -FastMath.PI / 2.0f, 0.0f);
-        }
-        double sqx = x*x;
-        double sqy = y*y;
-        double sqz = z*z;
-        return new Vector3f((float) Math.atan2(2*y*w - 2*x*z, 1 - 2*sqy - 2*sqz), (float) Math.asin(2*test), (float) Math.atan2(2*x*w - 2*y*z , 1 - 2*sqx - 2*sqz));
-        */
     }
 
     public Quaternion rotate(Quaternion quaternion) {
