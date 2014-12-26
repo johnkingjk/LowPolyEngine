@@ -64,12 +64,9 @@ public class Renderer implements Unloadable{
             currentShader.setupViewMatrix(viewMatrix);
             for(ModelPart part : model.getParts()) {
                 //switch shader
-                if(part.getShader() != null && part.getShader() != currentShader) {
-                    currentShader = part.getShader();
-                    currentShader.start();
-                    currentShader.setupViewMatrix(viewMatrix);
-                } else if (part.getShader() == null && currentShader != defaultShader) {
-                    currentShader = defaultShader;
+                ShaderProgram targetShader = part.getShader() == null ? defaultShader : part.getShader();
+                if(targetShader != currentShader) {
+                    currentShader = targetShader;
                     currentShader.start();
                     currentShader.setupViewMatrix(viewMatrix);
                 }
