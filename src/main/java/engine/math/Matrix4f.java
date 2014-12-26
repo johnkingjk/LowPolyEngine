@@ -1,7 +1,5 @@
 package engine.math;
 
-import engine.transform.Camera;
-
 import java.nio.FloatBuffer;
 
 /**
@@ -17,7 +15,32 @@ public class Matrix4f {
     }
 
     public Matrix4f(Quaternion quaternion) {
-        //TODO: make dat shit @johnking
+        m = new float[4][4];
+        float n = 1 / quaternion.length() * 2.0f;
+
+        float nx = quaternion.getX() * n;
+        float ny = quaternion.getY() * n;
+        float nz = quaternion.getZ() * n;
+        float xx = quaternion.getX() * nx;
+        float xy = quaternion.getX() * ny;
+        float xz = quaternion.getX() * nz;
+        float xw = quaternion.getW() * nx;
+        float yy = quaternion.getY() * ny;
+        float yz = quaternion.getY() * nz;
+        float yw = quaternion.getW() * ny;
+        float zz = quaternion.getZ() * nz;
+        float zw = quaternion.getW() * nz;
+
+        m[0][0] = 1 - (yy + zz);
+        m[0][1] = xy - zw;
+        m[0][2] = xz + yw;
+        m[1][0] = xy + zw;
+        m[1][1] = 1 - (xx + zz);
+        m[1][2] = yz - xw;
+        m[2][0] = xz - yw;
+        m[2][1] = yz + xw;
+        m[2][2] = 1 - (xx + yy);
+        m[3][3] = 1.0f;
     }
 
     public Matrix4f identity() {
@@ -101,7 +124,7 @@ public class Matrix4f {
     }
 
     public Matrix4f rotate(Quaternion quaternion) {
-        //TODO: make dat shit @johnking
+        this.mul(new Matrix4f(quaternion));
 
         return this;
     }
