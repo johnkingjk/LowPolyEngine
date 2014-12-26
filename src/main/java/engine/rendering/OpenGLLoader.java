@@ -105,9 +105,9 @@ public class OpenGLLoader implements Unloadable {
             if(vertices[i] == null) {
                 continue;
             }
-            Vector2f texture = vertices[i].getTexture() == null ? new Vector2f(0, 0) : vertices[i].getTexture();
-            textures[i * 2] = texture.getX();
-            textures[i * 2 + 1] = texture.getY();
+            Vector2f texture = vertices[i].getTexture();
+            textures[i * 2] = texture == null ? 0 : texture.getX();
+            textures[i * 2 + 1] = texture == null ? 0 : texture.getY();
         }
         return textures;
     }
@@ -118,7 +118,7 @@ public class OpenGLLoader implements Unloadable {
             if(vertices[i] == null) {
                 continue;
             }
-            Vector3f normal = vertices[i].getNormal() == null ? new Vector3f(0, 0, 0) : vertices[i].getNormal();
+            Vector3f normal = vertices[i].getNormal() == null ? new Vector3f(0, 1, 0) : vertices[i].getNormal();
             normals[i * 3] = normal.getX();
             normals[i * 3 + 1] = normal.getY();
             normals[i * 3 + 2] = normal.getZ();
