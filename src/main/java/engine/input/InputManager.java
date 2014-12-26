@@ -18,7 +18,7 @@ public class InputManager {
     private static Vector2i mousePos = Vector2i.zero();
     private static Vector2i mouseDeltaPos = Vector2i.zero();
 
-    private static int mouseWeel = 0;
+    private static int mouseWheel = 0;
 
     public static void init() {
         try {
@@ -41,17 +41,16 @@ public class InputManager {
         mouseDeltaPos.setX(Mouse.getDX());
         mouseDeltaPos.setY(Mouse.getDY());
 
-        mouseWeel = Mouse.getDWheel();
+        mouseWheel = Mouse.getDWheel();
 
         //call events
         while (Mouse.next()) {
             if (Mouse.getEventButtonState()) {
                 EventManager.callEvent(new MousePressedEvent(Mouse.getEventButton()));
             }
-            if (Mouse.getEventDWheel() > 0) {
-                EventManager.callEvent(new MouseWheelEvent(MouseWheelDirection.UP));
-            } else if (Mouse.getEventDWheel() < 0) {
-                EventManager.callEvent(new MouseWheelEvent(MouseWheelDirection.DOWN));
+            int eventDWheel = Mouse.getEventDWheel();
+            if (eventDWheel != 0) {
+                EventManager.callEvent(new MouseWheelEvent(eventDWheel));
             }
         }
 
@@ -95,8 +94,8 @@ public class InputManager {
         return mouseDeltaPos;
     }
 
-    public static int getMouseWeel() {
-        return mouseWeel;
+    public static int getMouseWheel() {
+        return mouseWheel;
     }
 
 }
