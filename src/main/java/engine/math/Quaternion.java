@@ -5,10 +5,19 @@ package engine.math;
  */
 public class Quaternion {
 
+    public static final Quaternion IDENTITY = new Quaternion();
+
     private float x;
     private float y;
     private float z;
     private float w;
+
+    public Quaternion() {
+        x = 0;
+        y = 0;
+        z = 0;
+        w = 1;
+    }
 
     public Quaternion(float x, float y, float z, float w) {
 
@@ -56,6 +65,39 @@ public class Quaternion {
 
         return new Quaternion(x_, y_, z_, w_);
     }
+
+    /**
+     * @author jmonkeyengine
+     */
+    public Quaternion fromAngles(float yaw, float roll, float pitch) {
+        float angle;
+        float sinRoll, sinPitch, sinYaw, cosRoll, cosPitch, cosYaw;
+        angle = pitch * 0.5f;
+        sinPitch = (float) Math.sin(angle);
+        cosPitch = (float) Math.cos(angle);
+        angle = roll * 0.5f;
+        sinRoll = (float) Math.sin(angle);
+        cosRoll = (float) Math.cos(angle);
+        angle = yaw * 0.5f;
+        sinYaw = (float) Math.sin(angle);
+        cosYaw = (float) Math.cos(angle);
+
+        // variables used to reduce multiplication calls.
+        float cosRollXcosPitch = cosRoll * cosPitch;
+        float sinRollXsinPitch = sinRoll * sinPitch;
+        float cosRollXsinPitch = cosRoll * sinPitch;
+        float sinRollXcosPitch = sinRoll * cosPitch;
+
+        w = (cosRollXcosPitch * cosYaw - sinRollXsinPitch * sinYaw);
+        x = (cosRollXcosPitch * sinYaw + sinRollXsinPitch * cosYaw);
+        y = (sinRollXcosPitch * cosYaw + cosRollXsinPitch * sinYaw);
+        z = (cosRollXsinPitch * cosYaw - sinRollXcosPitch * sinYaw);
+
+        normalize();
+
+        return this;
+    }
+
 
     public float getX() {
         return x;
