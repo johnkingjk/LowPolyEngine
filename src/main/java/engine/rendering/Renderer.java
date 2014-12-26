@@ -83,7 +83,7 @@ public class Renderer implements Unloadable{
     private void render(ModelPart part, Transform transform, ShaderProgram shader) {
         shader.setupTransform(transform.getTransformation());
         for(ModelGroup group : part.getGroups()) {
-            shader.setupGroup(group);
+            shader.setupMaterial(group.getMaterial());
             GL11.glDrawElements(GL11.GL_TRIANGLES, group.getIndexCount(), GL11.GL_UNSIGNED_INT, group.getIndexStart() * 4);
         }
     }

@@ -3,8 +3,7 @@ package engine.rendering.shader;
 import engine.misc.Unloadable;
 import engine.math.Matrix4f;
 import engine.math.Vector3f;
-import engine.rendering.RenderGroup;
-import engine.transform.Transform;
+import engine.rendering.texture.Material;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
@@ -68,7 +67,7 @@ public abstract class ShaderProgram implements Unloadable {
 
     public abstract void setupTransform(Matrix4f transformationMatrix);
 
-    public abstract void setupGroup(RenderGroup group);
+    public abstract void setupMaterial(Material group);
 
     public abstract void setupViewMatrix(Matrix4f viewMatrix);
 

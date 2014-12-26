@@ -2,9 +2,7 @@ package engine.rendering.shader;
 
 import engine.math.Matrix4f;
 import engine.math.Vector3f;
-import engine.rendering.RenderGroup;
-import engine.rendering.model.ModelGroup;
-import engine.transform.Transform;
+import engine.rendering.texture.Material;
 
 /**
  * Created by Marco on 24.12.2014.
@@ -46,8 +44,8 @@ public class DefaultShader extends ShaderProgram {
     }
 
     @Override
-    public void setupGroup(RenderGroup group) {
-        this.setColour(group.getMaterial().getDiffuseColor());
+    public void setupMaterial(Material group) {
+        this.setColour(group.getDiffuseColor());
     }
 
     @Override

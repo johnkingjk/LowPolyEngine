@@ -88,6 +88,9 @@ public class ModelLoader {
 
                 //load data
                 switch (data[0]) {
+                    case "s" :
+                        currentPart.setSmooth(!data[1].equals("off"));
+                        continue;
                     case "v" : //handle vertex
                         Vector3f location = new Vector3f(Float.parseFloat(data[1]), Float.parseFloat(data[2]), Float.parseFloat(data[3]));
                         tempLocations.add(location);

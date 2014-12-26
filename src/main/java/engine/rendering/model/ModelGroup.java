@@ -1,12 +1,11 @@
 package engine.rendering.model;
 
-import engine.rendering.RenderGroup;
 import engine.rendering.texture.Material;
 
 /**
  * Created by Marco on 22.12.2014.
  */
-public class ModelGroup implements RenderGroup{
+public class ModelGroup {
 
     private Material material;
     private int indexStart;
@@ -17,7 +16,6 @@ public class ModelGroup implements RenderGroup{
         this.indexStart = indexStart;
     }
 
-    @Override
     public Material getMaterial() {
         return material;
     }
