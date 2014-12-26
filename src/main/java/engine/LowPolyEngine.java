@@ -1,6 +1,7 @@
 package engine;
 
 import engine.input.InputManager;
+import engine.math.Quaternion;
 import engine.rendering.OpenGLLoader;
 import engine.math.Matrix4f;
 import engine.math.Vector3f;
@@ -30,12 +31,13 @@ public class LowPolyEngine {
                         )
         );
 
-        Matrix4f projectionMatrix = new Matrix4f().setProjection(70, Display.getWidth(), Display.getHeight(), 0.1f, 1000.0f);
 
         new TestListener();
 
         OpenGLLoader loader = new OpenGLLoader();
-        Renderer renderer = new Renderer(projectionMatrix);
+
+        Camera camera = new Camera(new Vector3f(0, 5, -10), Quaternion.IDENTITY, Display.getWidth(), Display.getHeight(), 70, 0.1f, 1000.0f);
+        Renderer renderer = new Renderer(camera.getProjection());
         ModelLoader modelLoader = new ModelLoader();
 
         Model mountain = modelLoader.readObjectFile("src/main/resources/models/mountain.obj", loader);
@@ -45,9 +47,8 @@ public class LowPolyEngine {
         Model bigvalley = modelLoader.readObjectFile("src/main/resources/models/bigvalley2.obj", loader);
         Transform transform_bigvalley = new Transform();
         transform_bigvalley.setTranslation(new Vector3f(0, 0, 0));
-        transform_bigvalley.setRotation(new Vector3f(0, 0, 0));
 
-        Camera camera = new Camera(new Vector3f(0, 5, -10), 0, 0);
+
 
         InputManager.init();
 

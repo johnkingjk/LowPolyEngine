@@ -1,6 +1,7 @@
 package engine.transform;
 
 import engine.math.Matrix4f;
+import engine.math.Quaternion;
 import engine.math.Vector3f;
 
 /**
@@ -10,7 +11,7 @@ import engine.math.Vector3f;
 public class Transform {
 
     private Vector3f translation;
-    private Vector3f rotation;
+    private Quaternion rotation;
     private Vector3f scale;
 
     private Matrix4f matrix;
@@ -18,11 +19,23 @@ public class Transform {
 
     public Transform() {
         translation = new Vector3f(0, 0, 0);
-        rotation = new Vector3f(0, 0, 0);
+        rotation = Quaternion.IDENTITY;
         scale = new Vector3f(1, 1, 1);
 
         matrix = new Matrix4f();
         changed = true;
+    }
+
+    public Transform(Vector3f translation, Quaternion rotation, Vector3f scale) {
+        this.translation = translation;
+        this.rotation = rotation;
+        this.scale = scale;
+    }
+
+    public Transform(Vector3f translation, Quaternion rotation) {
+        this.translation = translation;
+        this.rotation = rotation;
+        this.scale = new Vector3f(1, 1, 1);
     }
 
     public Matrix4f getTransformation() {
@@ -46,11 +59,11 @@ public class Transform {
         this.changed = true;
     }
 
-    public Vector3f getRotation() {
+    public Quaternion getRotation() {
         return rotation;
     }
 
-    public void setRotation(Vector3f rotation) {
+    public void setRotation(Quaternion rotation) {
         this.rotation = rotation;
         this.changed = true;
     }
