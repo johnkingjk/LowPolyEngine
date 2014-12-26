@@ -16,6 +16,10 @@ public class Matrix4f {
         this.identity();
     }
 
+    public Matrix4f(Quaternion quaternion) {
+        //TODO: make dat shit @johnking
+    }
+
     public Matrix4f identity() {
         m[0][0] = 1;
         m[0][1] = 0;
@@ -96,6 +100,12 @@ public class Matrix4f {
         return this;
     }
 
+    public Matrix4f rotate(Quaternion quaternion) {
+        //TODO: make dat shit @johnking
+
+        return this;
+    }
+
     public Matrix4f scale(Vector3f scale) {
         m[0][0] *= scale.getX();
         m[0][1] *= scale.getX();
@@ -111,29 +121,6 @@ public class Matrix4f {
         m[2][1] *= scale.getZ();
         m[2][2] *= scale.getZ();
         m[2][3] *= scale.getZ();
-
-        return this;
-    }
-
-    public Matrix4f setProjection(float fov, float width, float height, float zNear, float zFar) {
-        float aspectRatio = width / height;
-        float y_scale = (float) (1f / Math.tan(Math.toRadians(fov / 2))) * aspectRatio;
-        float x_scale = y_scale /aspectRatio;
-        float frustum_length = zFar - zNear;
-
-        m[0][0] = x_scale;
-        m[1][1] = y_scale;
-        m[2][2] = -((zFar + zNear) / frustum_length);
-        m[2][3] = -1;
-        m[3][2] = -(2 * zNear * zFar / frustum_length);
-        m[3][3] = 0;
-
-        return this;
-    }
-
-    public Matrix4f setCamera(Camera camera) {
-        rotate((float) camera.getPitch(), (float) camera.getYaw(), 0);
-        translate(camera.getPosition().negate());
 
         return this;
     }

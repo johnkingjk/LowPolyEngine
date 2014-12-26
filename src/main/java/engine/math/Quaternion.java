@@ -27,49 +27,10 @@ public class Quaternion {
         this.w = w;
     }
 
-    public float length() {
-        return (float) Math.sqrt(x * x + y * y + z * z + w * w);
-    }
-
-    public Quaternion normalize() {
-        float length = length();
-
-        x /= length;
-        y /= length;
-        z /= length;
-        w /= length;
-
-        return this;
-    }
-
-    public Quaternion conjugate() {
-
-        return new Quaternion(-x, -y, -z, w);
-
-    }
-
-    public Quaternion mul(Quaternion r) {
-        float w_ = w * r.getW() - x * r.getX() - y * r.getY() - z * r.getZ();
-        float x_ = x * r.getW() + w * r.getX() + y * r.getZ() - z * r.getY();
-        float y_ = y * r.getW() + w * r.getY() + z * r.getX() - x * r.getZ();
-        float z_ = z * r.getW() + w * r.getZ() + x * r.getY() - y * r.getX();
-
-        return new Quaternion(x_, y_, z_, w_);
-    }
-
-    public Quaternion mul(Vector3f r) {
-        float w_ = -x * r.getX() - y * r.getY() - z * r.getZ();
-        float x_ = w * r.getX() + y * r.getZ() - z * r.getY();
-        float y_ = w * r.getY() + z * r.getX() - x * r.getZ();
-        float z_ = w * r.getZ() + x * r.getY() - y * r.getX();
-
-        return new Quaternion(x_, y_, z_, w_);
-    }
-
     /**
      * @author jmonkeyengine
      */
-    public Quaternion fromAngles(float yaw, float roll, float pitch) {
+    public Quaternion(float yaw, float roll, float pitch) {
         float angle;
         float sinRoll, sinPitch, sinYaw, cosRoll, cosPitch, cosYaw;
         angle = pitch * 0.5f;
@@ -94,10 +55,63 @@ public class Quaternion {
         z = (cosRollXsinPitch * cosYaw - sinRollXcosPitch * sinYaw);
 
         normalize();
+    }
+
+    public float[] toAngles() {
+        //TODO: make dat shit @johnking
+        //float yaw, float roll, float pitch
+        float[] f = new float[2];
+        return f;
+    }
+
+    public Quaternion rotate(Quaternion quaternion) {
+        //TODO: make dat shit @johnking
+        return this;
+    }
+
+    public float length() {
+        return (float) Math.sqrt(x * x + y * y + z * z + w * w);
+    }
+
+    public Quaternion normalize() {
+        float length = length();
+
+        x /= length;
+        y /= length;
+        z /= length;
+        w /= length;
 
         return this;
     }
 
+    public Quaternion conjugate() {
+        return new Quaternion(-x, -y, -z, w);
+    }
+
+    public Quaternion negate() {
+        x *= -1;
+        y *= -1;
+        z *= -1;
+        w *= -1;
+    }
+
+    public Quaternion mul(Quaternion r) {
+        float w_ = w * r.getW() - x * r.getX() - y * r.getY() - z * r.getZ();
+        float x_ = x * r.getW() + w * r.getX() + y * r.getZ() - z * r.getY();
+        float y_ = y * r.getW() + w * r.getY() + z * r.getX() - x * r.getZ();
+        float z_ = z * r.getW() + w * r.getZ() + x * r.getY() - y * r.getX();
+
+        return new Quaternion(x_, y_, z_, w_);
+    }
+
+    public Quaternion mul(Vector3f r) {
+        float w_ = -x * r.getX() - y * r.getY() - z * r.getZ();
+        float x_ = w * r.getX() + y * r.getZ() - z * r.getY();
+        float y_ = w * r.getY() + z * r.getX() - x * r.getZ();
+        float z_ = w * r.getZ() + x * r.getY() - y * r.getX();
+
+        return new Quaternion(x_, y_, z_, w_);
+    }
 
     public float getX() {
         return x;
