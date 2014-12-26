@@ -57,11 +57,11 @@ public class Quaternion {
         normalize();
     }
 
-    public float[] toAngles() {
+    public Vector3f toAngles() {
         //TODO: make dat shit @johnking
         //float yaw, float roll, float pitch
-        float[] f = new float[2];
-        return f;
+        Vector3f angles = new Vector3f(0, 0, 0);
+        return angles;
     }
 
     public Quaternion rotate(Quaternion quaternion) {
@@ -93,6 +93,8 @@ public class Quaternion {
         y *= -1;
         z *= -1;
         w *= -1;
+
+        return this;
     }
 
     public Quaternion mul(Quaternion r) {
