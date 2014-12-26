@@ -39,6 +39,10 @@ public class Debug {
         logger.log(level, complete.substring(complete.length() - SPACER.length()));
     }
 
+    public static void Log(Object object) {
+        logger.log(Level.INFO, object.toString());
+    }
+
     public static void Log(Level level, Object object) {
         logger.log(level, object.toString());
     }

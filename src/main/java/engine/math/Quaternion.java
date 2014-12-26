@@ -20,7 +20,6 @@ public class Quaternion {
     }
 
     public Quaternion(float x, float y, float z, float w) {
-
         this.x = x;
         this.y = y;
         this.z = z;
@@ -150,4 +149,13 @@ public class Quaternion {
         this.w = w;
     }
 
+    @Override
+    public String toString() {
+        return "Quaternion{" +
+                "x=" + x +
+                ", y=" + y +
+                ", z=" + z +
+                ", w=" + w +
+                '}';
+    }
 }
