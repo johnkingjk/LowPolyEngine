@@ -74,12 +74,12 @@ public class Matrix4f {
     }
 
     public Matrix4f rotate(float rx, float ry, float rz) {
-        float sinX = (float) Math.sin(rx);
-        float cosX = (float) Math.cos(rx);
-        float sinY = (float) Math.sin(ry);
-        float cosY = (float) Math.cos(ry);
-        float sinZ = (float) Math.sin(rz);
-        float cosZ = (float) Math.cos(rz);
+        float sinX = FastMath.sin(rx);
+        float cosX = FastMath.cos(rx);
+        float sinY = FastMath.sin(ry);
+        float cosY = FastMath.cos(ry);
+        float sinZ = FastMath.sin(rz);
+        float cosZ = FastMath.cos(rz);
 
         float[][] t = new float[4][4];
 
@@ -120,7 +120,10 @@ public class Matrix4f {
     }
 
     public Matrix4f rotate(Quaternion quaternion) {
-        this.mul(new Matrix4f(quaternion));
+        Matrix4f rotation = new Matrix4f(quaternion);
+        rotation.mul(this);
+
+        rotation.copyTo(m);
 
         return this;
     }

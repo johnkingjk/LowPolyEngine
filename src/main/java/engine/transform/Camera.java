@@ -23,8 +23,6 @@ public class Camera extends Transform {
     private float zNear;
     private float zFar;
 
-    private float rotX, rotY;
-
     private Matrix4f viewMatrix;
     private Matrix4f projection;
 
@@ -48,8 +46,7 @@ public class Camera extends Transform {
             //System.out.println(angles.toString());
             angles.setX(angles.getX() + (float) Math.toRadians(InputManager.getMouseDeltaPos().getY()));
             angles.setY(angles.getY() + (float) Math.toRadians(InputManager.getMouseDeltaPos().getX()));
-            rotX = angles.getX();
-            rotY = angles.getY();
+            //rotation.mul(new Quaternion(new Vector3f((float) Math.toRadians(InputManager.getMouseDeltaPos().getY()), (float) Math.toRadians(InputManager.getMouseDeltaPos().getX()), 0)));
             recalculateViewMatrix();
             setRotation(new Quaternion(angles));
             //getRotation().mul(new Quaternion(new Vector3f((float) Math.toRadians(InputManager.getMouseDeltaPos().getX()), (float) Math.toRadians(InputManager.getMouseDeltaPos().getY()), 0)));
@@ -70,7 +67,7 @@ public class Camera extends Transform {
 
     public void recalculateViewMatrix() {
         Matrix4f m = new Matrix4f();
-        m.rotate(rotX, rotY, 0);
+        m = m.rotate(this.rotation);
         m.translate(getTranslation().negate());
 
         viewMatrix = m;
