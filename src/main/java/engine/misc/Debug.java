@@ -36,7 +36,7 @@ public class Debug {
             sb.append(SPACER);
         }
         String complete = sb.toString();
-        logger.log(level, complete.substring(complete.length() - SPACER.length()));
+        logger.log(level, complete.substring(0, complete.length() - SPACER.length()));
     }
 
     public static void Log(Object object) {
@@ -54,7 +54,7 @@ public class Debug {
             sb.append(SPACER);
         }
         String complete = sb.toString();
-        logger.log(level, complete.substring(complete.length() - SPACER.length()));
+        logger.log(level, complete.substring(0, complete.length() - SPACER.length()));
     }
 
 }

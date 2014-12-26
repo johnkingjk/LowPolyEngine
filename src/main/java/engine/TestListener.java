@@ -21,7 +21,7 @@ public class TestListener implements Listener {
         if (event instanceof MousePressedEvent) {
             MousePressedEvent mousePressed = (MousePressedEvent) event;
 
-            System.out.println(mousePressed.getId());
+            //System.out.println(mousePressed.getId());
         }
     }
 }
