@@ -102,6 +102,10 @@ public class Vector3f {
         return new Vector3f(0, 0, 0);
     }
 
+    public static Vector3f fromColor(int r, int g, int b) {
+        return new Vector3f((float) r/255, (float) g/255, (float) b/255);
+    }
+
     public String toString()
     {
         return "(" + x + " " + y + " " + z + ")";

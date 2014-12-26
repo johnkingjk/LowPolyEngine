@@ -59,7 +59,7 @@ public class LowPolyEngine {
         DefaultShader shader = new DefaultShader();
         renderer.registerShader(shader);
         Terrain terrain = new Terrain(loader);
-        Material mat = new Material("test", Vector3f.zero(), new Vector3f(51, 227, 16), Vector3f.zero(), (byte) 0, 0f, 1f, new Texture(0));
+        Material mat = new Material("test", Vector3f.zero(), Vector3f.fromColor(227, 212, 118), Vector3f.zero(), (byte) 0, 0f, 1f, new Texture(0));
 
         //GL11.glPolygonMode(GL11.GL_FRONT_AND_BACK, GL11.GL_LINE);
 
