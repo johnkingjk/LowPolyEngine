@@ -165,6 +165,54 @@ public class ModelLoader {
             int nextVertexIndex = tempLocations.size();
             vertices.setSize(nextVertexIndex);
 
+            //part for calculating missing normals
+            for(ModelPart part : parts) {
+                boolean smooth = part.isSmooth();
+                for(ModelGroup group : part.getGroups()) {
+                    //split into triangles
+                    for(int i = group.getIndexStart(); i < group.getIndexStart() + group.getIndexCount(); i+=3) {
+                        Vector3f[] locations = new Vector3f[3];
+                        Vector3f[] normals = new Vector3f[3];
+                        boolean calculateNormal = false;
+
+                        //check if calculation is necessary
+                        for(int j = 0; j < 3; j++) {
+                            Vector3i index = tempIndices.get(i + j);
+                            locations[j] = tempLocations.get(index.getX());
+                            normals[j] = index.getZ() != -1 ? tempNormals.get(index.getZ()) : null;
+                            calculateNormal = calculateNormal || index.getZ() == -1;
+                        }
+
+                        //calculate normal if model part not smooth + no normals are given in obj
+                        if(calculateNormal && !smooth) {
+                            Vector3f triangleNormal = locations[0].sub(locations[1]).cross(locations[0].sub(locations[2])).normalized();
+                            for(int j = 0; j < 3; j++) {
+                                normals[j] = triangleNormal;
+                            }
+                        }
+
+                        //store in final list
+                        for(int j = 0; j < 3; j++) {
+                            Vector3i index = tempIndices.get(i + j);
+                            Vector2f texture = index.getY() != -1 ? tempTextures.get(index.getY()) : null;
+
+                            Vertex stored = vertices.get(index.getX());
+                            if (stored == null) {
+                                indices.add(index.getX());
+                                vertices.set(index.getX(), new Vertex(locations[j], normals[j], texture));
+                            } else if (stored.equals(locations[j], normals[j], texture)) {
+                                indices.add(index.getX());
+                            } else {
+                                vertices.setSize(nextVertexIndex + 1);
+                                vertices.set(nextVertexIndex, new Vertex(locations[j], normals[j], texture));
+                                indices.add(nextVertexIndex++);
+                            }
+                        }
+                    }
+                }
+            }
+
+            /*
             for(Vector3i index : tempIndices) {
                 Vector3f location = tempLocations.get(index.getX());
                 Vector2f texture = index.getY() != -1 ? tempTextures.get(index.getY()) : null;
@@ -183,6 +231,7 @@ public class ModelLoader {
                     indices.add(nextVertexIndex++);
                 }
             }
+            */
 
             /*
             for(Map.Entry<Integer, Vertex> duplicate : duplicates.entrySet()) {
