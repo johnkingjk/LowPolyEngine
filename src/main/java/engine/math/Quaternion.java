@@ -86,6 +86,9 @@ public class Quaternion {
 
         normalize();
 
+        return this;
+    }
+
 
     public float getX() {
         return x;
