@@ -30,7 +30,11 @@ public class Quaternion {
     /**
      * @author jmonkeyengine
      */
-    public Quaternion(float yaw, float roll, float pitch) {
+    public Quaternion(Vector3f rotation) {
+        float pitch = rotation.getX();
+        float yaw = rotation.getY();
+        float roll = rotation.getZ();
+
         float angle;
         float sinRoll, sinPitch, sinYaw, cosRoll, cosPitch, cosYaw;
         angle = pitch * 0.5f;
@@ -59,7 +63,6 @@ public class Quaternion {
 
     public Vector3f toAngles() {
         //TODO: make dat shit @johnking
-        //float yaw, float roll, float pitch
         Vector3f angles = new Vector3f(0, 0, 0);
         return angles;
     }
