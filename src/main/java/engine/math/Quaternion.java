@@ -5,10 +5,19 @@ package engine.math;
  */
 public class Quaternion {
 
+    public static final Quaternion IDENTITY = new Quaternion();
+
     private float x;
     private float y;
     private float z;
     private float w;
+
+    public Quaternion() {
+        x = 0;
+        y = 0;
+        z = 0;
+        w = 1;
+    }
 
     public Quaternion(float x, float y, float z, float w) {
 
