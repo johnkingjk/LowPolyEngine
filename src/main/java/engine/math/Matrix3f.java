@@ -12,6 +12,10 @@ public class Matrix3f {
         this.identity();
     }
 
+    public Matrix3f(float[][] m) {
+        this.m = m;
+    }
+
     public Matrix3f(float angle, Vector3f axis) {
         m = new float[3][3];
         axis = axis.normalized();
@@ -40,19 +44,70 @@ public class Matrix3f {
         m[2][2] = zz * oneMinusCos + cos;
     }
 
-    public void identity() {
-        m[0][0] = 1; m[0][1] = 0; m[0][2] = 0;
-        m[1][0] = 0; m[1][1] = 1; m[1][2] = 0;
-        m[2][0] = 0; m[2][1] = 0; m[2][2] = 1;
+    public Matrix3f identity() {
+        m[0][0] = 1;
+        m[0][1] = 0;
+        m[0][2] = 0;
+        m[1][0] = 0;
+        m[1][1] = 1;
+        m[1][2] = 0;
+        m[2][0] = 0;
+        m[2][1] = 0;
+        m[2][2] = 1;
+
+        return this;
     }
 
-    public Vector3f mul(Vector3f vector) {
-        Vector3f result = new Vector3f();
+    public Vector3f mul(Vector3f v) {
+        float x = v.getX();
+        float y = v.getY();
+        float z = v.getZ();
+        v.setX(m[0][0] * x + m[0][1] * y + m[0][2] * z);
+        v.setY(m[1][0] * x + m[1][1] * y + m[1][2] * z);
+        v.setZ(m[2][0] * x + m[2][1] * y + m[2][2] * z);
+        return v;
+    }
 
-        result.setX(m[0][0] * vector.getX() + m[0][1] * vector.getY() + m[0][2] * vector.getZ());
-        result.setY(m[1][0] * vector.getX() + m[1][1] * vector.getY() + m[1][2] * vector.getZ());
-        result.setZ(m[2][0] * vector.getX() + m[2][1] * vector.getY() + m[2][2] * vector.getZ());
+    public Matrix3f mul(Matrix3f r) {
+        float[][] t = new float[3][3];
+        this.copyTo(t);
 
-        return result;
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                this.set(i, j, t[i][0] * r.get(0, j) + t[i][1] * r.get(1, j)
+                        + t[i][2] * r.get(2, j));
+            }
+        }
+
+        return this;
+    }
+
+    public void copyTo(float[][] matrix) {
+        for (int x = 0; x < 3; x++) {
+            for (int y = 0; y < 3; y++) {
+                matrix[x][y] = m[x][y];
+            }
+        }
+    }
+
+    public float[][] getM() {
+        return m;
+    }
+
+    public void setM(float[][] m) {
+        this.m = m;
+    }
+
+    public float get(int x, int y) {
+        return m[x][y];
+    }
+
+    public void set(int x, int y, float value) {
+        m[x][y] = value;
+    }
+
+    @Override
+    public Matrix3f clone() {
+        return new Matrix3f(m);
     }
 }

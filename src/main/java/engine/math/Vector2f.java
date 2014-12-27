@@ -13,6 +13,10 @@ public class Vector2f {
         this.y = y;
     }
 
+    public static Vector2f zero() {
+        return new Vector2f(0, 0);
+    }
+
     public float length() {
         return (float) FastMath.sqrt(x * x + y * y);
     }
@@ -39,39 +43,51 @@ public class Vector2f {
     }
 
     public Vector2f add(Vector2f r) {
-        return new Vector2f(x + r.getX(), y + r.getY());
+        x += r.getX();
+        y += r.getY();
+        return this;
     }
 
     public Vector2f add(float r) {
-        return new Vector2f(x + r, y + r);
+        x += r;
+        y += r;
+        return this;
     }
 
     public Vector2f sub(Vector2f r) {
-        return new Vector2f(x - r.getX(), y - r.getY());
+        x -= r.getX();
+        y -= r.getY();
+        return this;
     }
 
     public Vector2f sub(float r) {
-        return new Vector2f(x - r, y - r);
+        x -= r;
+        y -= r;
+        return this;
     }
 
     public Vector2f mul(Vector2f r) {
-        return new Vector2f(x * r.getX(), y * r.getY());
+        x *= r.getX();
+        y *= r.getY();
+        return this;
     }
 
     public Vector2f mul(float r) {
-        return new Vector2f(x * r, y * r);
+        x *= r;
+        y *= r;
+        return this;
     }
 
     public Vector2f div(Vector2f r) {
-        return new Vector2f(x / r.getX(), y / r.getY());
+        x /= r.getX();
+        y /= r.getY();
+        return this;
     }
 
     public Vector2f div(float r) {
-        return new Vector2f(x / r, y / r);
-    }
-
-    public static Vector2f zero() {
-        return new Vector2f(0, 0);
+        x /= r;
+        y /= r;
+        return this;
     }
 
     public String toString() {
@@ -95,11 +111,16 @@ public class Vector2f {
     }
 
     @Override
+    public Vector2f clone() {
+        return new Vector2f(x, y);
+    }
+
+    @Override
     public boolean equals(Object o) {
-        if(o == null) {
+        if (o == null) {
             return false;
         }
-        if(!(o instanceof Vector2f)) {
+        if (!(o instanceof Vector2f)) {
             return false;
         }
         Vector2f other = (Vector2f) o;

@@ -33,4 +33,9 @@ public class Vector2i {
         this.y = y;
     }
 
+    @Override
+    public Vector2i clone() {
+        return new Vector2i(x, y);
+    }
+
 }

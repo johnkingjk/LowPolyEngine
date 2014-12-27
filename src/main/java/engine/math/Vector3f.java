@@ -16,6 +16,14 @@ public class Vector3f {
         this.z = z;
     }
 
+    public static Vector3f zero() {
+        return new Vector3f(0, 0, 0);
+    }
+
+    public static Vector3f fromColor(int r, int g, int b) {
+        return new Vector3f((float) r / 255, (float) g / 255, (float) b / 255);
+    }
+
     public float length() {
         return FastMath.sqrt(x * x + y * y + z * z);
     }
@@ -29,20 +37,27 @@ public class Vector3f {
         float y_ = z * r.getX() - x * r.getZ();
         float z_ = x * r.getY() - y * r.getX();
 
-        return new Vector3f(x_, y_, z_);
+        setX(x_);
+        setY(y_);
+        setZ(z_);
+
+        return this;
     }
 
     public Vector3f normalized() {
         float length = length();
 
-        return new Vector3f(x / length, y / length, z / length);
+        x /= length;
+        y /= length;
+        z /= length;
+        return this;
     }
 
     public Vector3f rotate(float angle, Vector3f axis) {
         Quaternion rotation = new Quaternion(angle, axis);
         Quaternion conjugate = rotation.conjugate();
 
-        Quaternion w = rotation.mul(this).mul(conjugate);
+        Quaternion w = rotation.clone().mul(this).mul(conjugate);
 
         x = w.getX();
         y = w.getY();
@@ -52,55 +67,76 @@ public class Vector3f {
     }
 
     public Vector3f negate() {
-        return new Vector3f(-x, -y, -z);
+        x *= -1;
+        y *= -1;
+        z *= -1;
+        return this;
     }
 
     public Vector3f add(Vector3f r) {
-        return new Vector3f(x + r.getX(), y + r.getY(), z + r.getZ());
+        x += r.getX();
+        y += r.getY();
+        z += r.getZ();
+        return this;
     }
 
     public Vector3f add(float r) {
-        return new Vector3f(x + r, y + r, z + r);
+        x += r;
+        y += r;
+        z += r;
+        return this;
     }
 
     public Vector3f sub(Vector3f r) {
-        return new Vector3f(x - r.getX(), y - r.getY(), z - r.getZ());
+        x -= r.getX();
+        y -= r.getY();
+        z -= r.getZ();
+        return this;
     }
 
     public Vector3f sub(float r) {
-        return new Vector3f(x - r, y - r, z - r);
+        x -= r;
+        y -= r;
+        z -= r;
+        return this;
     }
 
     public Vector3f mul(Vector3f r) {
-        return new Vector3f(x * r.getX(), y * r.getY(), z * r.getZ());
+        x *= r.getX();
+        y *= r.getY();
+        z *= r.getZ();
+        return this;
     }
 
     public Vector3f mul(float r) {
-        return new Vector3f(x * r, y * r, z * r);
+        x *= r;
+        y *= r;
+        z *= r;
+        return this;
     }
 
     public Vector3f div(Vector3f r) {
-        return new Vector3f(x / r.getX(), y / r.getY(), z / r.getZ());
+        x /= r.getX();
+        y /= r.getY();
+        z /= r.getZ();
+        return this;
     }
 
     public Vector3f div(float r) {
-        return new Vector3f(x / r, y / r, z / r);
+        x /= r;
+        y /= r;
+        z /= r;
+        return this;
     }
 
     public Vector3f abs() {
-        return new Vector3f(FastMath.abs(x), FastMath.abs(y), FastMath.abs(z));
+        x = FastMath.abs(x);
+        y = FastMath.abs(y);
+        z = FastMath.abs(z);
+        return this;
     }
 
-    public static Vector3f zero() {
-        return new Vector3f(0, 0, 0);
-    }
-
-    public static Vector3f fromColor(int r, int g, int b) {
-        return new Vector3f((float) r/255, (float) g/255, (float) b/255);
-    }
-
-    public String toString()
-    {
+    public String toString() {
         return "(" + x + " " + y + " " + z + ")";
     }
 
@@ -129,11 +165,16 @@ public class Vector3f {
     }
 
     @Override
+    public Vector3f clone() {
+        return new Vector3f(x, y, z);
+    }
+
+    @Override
     public boolean equals(Object o) {
-        if(o == null) {
+        if (o == null) {
             return false;
         }
-        if(!(o instanceof Vector3f)) {
+        if (!(o instanceof Vector3f)) {
             return false;
         }
         Vector3f other = (Vector3f) o;

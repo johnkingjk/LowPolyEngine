@@ -14,14 +14,24 @@ public class Matrix4f {
         this.identity();
     }
 
+    public Matrix4f(float[][] m) {
+        this.m = m;
+    }
+
     public Matrix4f(Vector3f location, Vector3f direction, Vector3f up) {
         this();
         Vector3f s = direction.cross(up);
         Vector3f u = s.cross(direction);
 
-        m[0][0] = s.getX(); m[0][1] = s.getY(); m[0][2] = s.getZ();
-        m[1][0] = u.getX(); m[1][1] = u.getY(); m[1][2] = u.getZ();
-        m[2][0] = -direction.getX();m[2][1] = -direction.getY();m[2][2] = -direction.getZ();
+        m[0][0] = s.getX();
+        m[0][1] = s.getY();
+        m[0][2] = s.getZ();
+        m[1][0] = u.getX();
+        m[1][1] = u.getY();
+        m[1][2] = u.getZ();
+        m[2][0] = -direction.getX();
+        m[2][1] = -direction.getY();
+        m[2][2] = -direction.getZ();
 
         this.translate(location.negate());
     }
@@ -189,29 +199,30 @@ public class Matrix4f {
     }
 
     public Matrix4f mul(Matrix4f r) {
-        Matrix4f res = new Matrix4f();
+        float[][] t = new float[4][4];
+        this.copyTo(t);
 
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
-                res.set(i, j, m[i][0] * r.get(0, j) + m[i][1] * r.get(1, j)
-                        + m[i][2] * r.get(2, j) + m[i][3] * r.get(3, j));
+                this.set(i, j, t[i][0] * r.get(0, j) + t[i][1] * r.get(1, j)
+                        + t[i][2] * r.get(2, j) + t[i][3] * r.get(3, j));
             }
         }
 
-        return res;
+        return this;
     }
 
     public void copyTo(float[][] matrix) {
-        for(int x = 0; x < 4; x++) {
-            for(int y = 0; y < 4; y++) {
+        for (int x = 0; x < 4; x++) {
+            for (int y = 0; y < 4; y++) {
                 matrix[x][y] = m[x][y];
             }
         }
     }
 
     public void store(FloatBuffer buffer) {
-        for(int x = 0; x < 4; x++) {
-            for(int y = 0; y < 4; y++) {
+        for (int x = 0; x < 4; x++) {
+            for (int y = 0; y < 4; y++) {
                 buffer.put(m[x][y]);
             }
         }
@@ -221,15 +232,20 @@ public class Matrix4f {
         return m;
     }
 
-    public float get(int x, int y) {
-        return m[x][y];
-    }
-
     public void setM(float[][] m) {
         this.m = m;
     }
 
+    public float get(int x, int y) {
+        return m[x][y];
+    }
+
     public void set(int x, int y, float value) {
         m[x][y] = value;
+    }
+
+    @Override
+    public Matrix4f clone() {
+        return new Matrix4f(m);
     }
 }

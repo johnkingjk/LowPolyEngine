@@ -42,4 +42,10 @@ public class Vector3i {
     public void setZ(int z) {
         this.z = z;
     }
+
+    @Override
+    public Vector3i clone() {
+        return new Vector3i(x, y, z);
+    }
+
 }

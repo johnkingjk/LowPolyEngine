@@ -66,7 +66,7 @@ public class Quaternion {
     public Quaternion(Vector3f xAxis, Vector3f yAxis, Vector3f zAxis) {
         float t = xAxis.getX() + yAxis.getY() + zAxis.getZ();
 
-        if(t >= 0) {
+        if (t >= 0) {
             float s = FastMath.sqrt(t + 1);
             w = 0.5f * s;
             s = 0.5f / s;
@@ -127,17 +127,17 @@ public class Quaternion {
         float tn2 = 1.0f / length() * 2.0f;
 
         switch (axis) {
-            case 0 :
+            case 0:
                 result.setX(1 - (y * y + z * z) * tn2);
                 result.setY((x * y + z * w) * tn2);
                 result.setZ((x * z - y * w) * tn2);
                 break;
-            case 1 :
+            case 1:
                 result.setX((x * y - z * w) * tn2);
                 result.setY(1 - (x * x + z * z) * tn2);
                 result.setZ((y * z + x * w) * tn2);
                 break;
-            case 2 :
+            case 2:
                 result.setX((x * z + y * w) * tn2);
                 result.setY((y * z - x * w) * tn2);
                 result.setZ(1 - (x * x + y * y) * tn2);
@@ -209,7 +209,12 @@ public class Quaternion {
         float z_ = z * r.getW() + w * r.getZ() + x * r.getY() - y * r.getX();
         float w_ = w * r.getW() - x * r.getX() - y * r.getY() - z * r.getZ();
 
-        return new Quaternion(x_, y_, z_, w_);
+        this.setX(x_);
+        this.setY(y_);
+        this.setZ(z_);
+        this.setW(w_);
+
+        return this;
     }
 
     public Quaternion mul(Vector3f r) {
@@ -218,11 +223,25 @@ public class Quaternion {
         float y_ = w * r.getY() + z * r.getX() - x * r.getZ();
         float z_ = w * r.getZ() + x * r.getY() - y * r.getX();
 
-        return new Quaternion(x_, y_, z_, w_);
+        this.setX(x_);
+        this.setY(y_);
+        this.setZ(z_);
+        this.setW(w_);
+
+        return this;
     }
 
     public float dot(Quaternion q) {
         return x * q.x + y * q.y + z * q.z + w * q.w;
+    }
+
+    public Quaternion scale(float scale) {
+        x *= scale;
+        y *= scale;
+        z *= scale;
+        w *= scale;
+
+        return this;
     }
 
     public float getX() {
