@@ -2,14 +2,8 @@ package engine.transform;
 
 import engine.input.InputManager;
 import engine.input.MouseButton;
-import engine.math.Matrix4f;
-import engine.math.Quaternion;
-import engine.math.Vector3f;
-import engine.misc.Debug;
-import org.lwjgl.Sys;
+import engine.math.*;
 import org.lwjgl.input.Mouse;
-
-import java.util.logging.Level;
 
 /**
  * Copyright by michidk
@@ -40,37 +34,30 @@ public class Camera extends Transform {
 
     public void update() {
         if(Mouse.isButtonDown(MouseButton.LEFT) || Mouse.isButtonDown(MouseButton.RIGHT)) {
-            //rot.setX(rot.getX() + (float)Math.toRadians(InputManager.getMouseDeltaPos().getY()));
-            //rot.setY(rot.getY() + (float) Math.toRadians(InputManager.getMouseDeltaPos().getX()));
-            Vector3f angles = getRotation().toAngles();
-            //System.out.println(angles.toString());
-            angles.setX(angles.getX() + (float) Math.toRadians(InputManager.getMouseDeltaPos().getY()));
-            angles.setY(angles.getY() + (float) Math.toRadians(InputManager.getMouseDeltaPos().getX()));
-            //rotation.mul(new Quaternion(new Vector3f((float) Math.toRadians(InputManager.getMouseDeltaPos().getY()), (float) Math.toRadians(InputManager.getMouseDeltaPos().getX()), 0)));
-            recalculateViewMatrix();
-            setRotation(new Quaternion(angles));
-            //getRotation().mul(new Quaternion(new Vector3f((float) Math.toRadians(InputManager.getMouseDeltaPos().getX()), (float) Math.toRadians(InputManager.getMouseDeltaPos().getY()), 0)));
-            //recalculateViewMatrix();
-            //Debug.Log(getRotation());
-            /*
-            Vector3f rot = getRotation().toAngles();
-            float pitch = rot.getX();
-            float yaw = rot.getY();
-
-            pitch -= ;
-            pitch %= 360;
-            yaw += ;
-            yaw %= 360;
-            */
+            rotateCamera(FastMath.toRadians(InputManager.getMouseDeltaPos().getX()), new Vector3f(0, 1, 0));
+            rotateCamera(FastMath.toRadians(InputManager.getMouseDeltaPos().getY()), rotation.getAxis(0));
         }
     }
 
-    public void recalculateViewMatrix() {
-        Matrix4f m = new Matrix4f();
-        m = m.rotate(this.rotation);
-        m.translate(getTranslation().negate());
+    public void rotateCamera(float angle, Vector3f axis) {
+        Matrix3f matrix = new Matrix3f(angle, axis);
 
-        viewMatrix = m;
+        Vector3f up = rotation.getAxis(1);
+        Vector3f left = rotation.getAxis(0);
+        Vector3f direction = rotation.getAxis(2);
+
+        up = matrix.mul(up);
+        left = matrix.mul(left);
+        direction = matrix.mul(direction);
+
+        Quaternion q = new Quaternion(left, up, direction);
+        q.normalize();
+
+        this.setRotation(q);
+    }
+
+    public void recalculateViewMatrix() {
+        viewMatrix = new Matrix4f(this.translation, this.rotation.getAxis(2), this.rotation.getAxis(1));
     }
 
     public Matrix4f getViewMatrix() {
@@ -147,7 +134,7 @@ public class Camera extends Transform {
     public void setRotation(Quaternion rotation) {
         super.setRotation(rotation);
 
-        //recalculateViewMatrix();
+        recalculateViewMatrix();
     }
 
     @Override

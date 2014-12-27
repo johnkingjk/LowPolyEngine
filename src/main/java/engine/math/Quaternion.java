@@ -29,11 +29,7 @@ public class Quaternion {
     /**
      * @author jmonkeyengine
      */
-    public Quaternion(Vector3f rotation) {
-        float xAngle = rotation.getX();
-        float yAngle = rotation.getY();
-        float zAngle = rotation.getZ();
-
+    public Quaternion(float xAngle, float yAngle, float zAngle) {
         float angle;
         float sinY, sinZ, sinX, cosY, cosZ, cosX;
         angle = zAngle * 0.5f;
@@ -60,8 +56,52 @@ public class Quaternion {
         normalize();
     }
 
-    public Vector3f toAngles() {
-        Vector3f result = new Vector3f(0, 0, 0);
+    public Quaternion(Vector3f axis, float angle) {
+        float halfAngle = 0.5f * angle;
+        float sin = FastMath.sin(halfAngle);
+
+        x = sin * axis.getX();
+        y = sin * axis.getY();
+        z = sin * axis.getZ();
+        w = FastMath.cos(halfAngle);
+    }
+
+    public Quaternion(Vector3f xAxis, Vector3f yAxis, Vector3f zAxis) {
+        float t = xAxis.getX() + yAxis.getY() + zAxis.getZ();
+
+        if(t >= 0) {
+            float s = FastMath.sqrt(t + 1);
+            w = 0.5f * s;
+            s = 0.5f / s;
+            x = (yAxis.getZ() - zAxis.getY()) * s;
+            y = (zAxis.getX() - xAxis.getZ()) * s;
+            z = (xAxis.getY() - yAxis.getX()) * s;
+        } else if (xAxis.getX() > yAxis.getY() && xAxis.getX() > zAxis.getZ()) {
+            float s = FastMath.sqrt(1.0f + xAxis.getX() - yAxis.getY() - zAxis.getZ());
+            x = s * 0.5f;
+            s = 0.5f / s;
+            y = (xAxis.getY() + yAxis.getX()) * s;
+            z = (zAxis.getX() + xAxis.getZ()) * s;
+            w = (yAxis.getZ() - zAxis.getY()) * s;
+        } else if (yAxis.getY() > zAxis.getZ()) {
+            float s = FastMath.sqrt(1.0f + yAxis.getY() - xAxis.getX() - zAxis.getZ());
+            y = s * 0.5f;
+            s = 0.5f / s;
+            x = (xAxis.getY() + yAxis.getX()) * s;
+            z = (yAxis.getZ() + zAxis.getY()) * s;
+            w = (zAxis.getX() - xAxis.getZ()) * s;
+        } else {
+            float s = FastMath.sqrt(1.0f + zAxis.getZ() - xAxis.getX() - yAxis.getY());
+            z = s * 0.5f;
+            s = 0.5f / s;
+            x = (zAxis.getX() + xAxis.getZ()) * s;
+            y = (yAxis.getZ() + zAxis.getY()) * s;
+            w = (xAxis.getY() - yAxis.getX()) * s;
+        }
+    }
+
+    public float[] toAngles() {
+        float[] result = new float[3];
 
         float sqw = w * w;
         float sqx = x * x;
@@ -71,24 +111,41 @@ public class Quaternion {
 
         float test = x * y + z * w;
         if (test > 0.499 * unit) {
-            result.setX(0);
-            result.setY(2.0f * FastMath.atan2(x, w));
-            result.setZ(FastMath.PI / 2.0f);
+            result[1] = 2.0f * FastMath.atan2(x, w);
+            result[2] = FastMath.PI / 2.0f;
         } else if (test < -0.499 * unit) {
-            result.setX(0);
-            result.setY(-2.0f * FastMath.atan2(x, w));
-            result.setZ(-FastMath.PI / 2.0f);
+            result[1] = -2.0f * FastMath.atan2(x, w);
+            result[2] = -FastMath.PI / 2.0f;
         } else {
-            result.setX(FastMath.atan2(2 * x * w - 2 * y * z, -sqx + sqy - sqz + sqw));
-            result.setY(FastMath.atan2(2 * y * w - 2 * x * z, sqx - sqy - sqz + sqw));
-            result.setZ(FastMath.asin(2 * test / unit));
+            result[0] = FastMath.atan2(2 * x * w - 2 * y * z, -sqx + sqy - sqz + sqw);
+            result[1] = FastMath.atan2(2 * y * w - 2 * x * z, sqx - sqy - sqz + sqw);
+            result[2] = FastMath.asin(2 * test / unit);
         }
         return result;
     }
 
-    public Quaternion rotate(Quaternion quaternion) {
-        //TODO: make dat shit @johnking
-        return this;
+    public Vector3f getAxis(int axis) {
+        Vector3f result = new Vector3f();
+
+        float tn2 = 1.0f / length() * 2.0f;
+
+        switch (axis) {
+            case 0 :
+                result.setX(1 - (y * y + z * z) * tn2);
+                result.setY((x * y + z * w) * tn2);
+                result.setZ((x * z - y * w) * tn2);
+                break;
+            case 1 :
+                result.setX((x * y - z * w) * tn2);
+                result.setY(1 - (x * x + z * z) * tn2);
+                result.setZ((y * z + x * w) * tn2);
+                break;
+            case 2 :
+                result.setX((x * z + y * w) * tn2);
+                result.setY((y * z - x * w) * tn2);
+                result.setZ(1 - (x * x + y * y) * tn2);
+        }
+        return result;
     }
 
     public float length() {
@@ -120,10 +177,10 @@ public class Quaternion {
     }
 
     public Quaternion mul(Quaternion r) {
-        float w_ = w * r.getW() - x * r.getX() - y * r.getY() - z * r.getZ();
         float x_ = x * r.getW() + w * r.getX() + y * r.getZ() - z * r.getY();
         float y_ = y * r.getW() + w * r.getY() + z * r.getX() - x * r.getZ();
         float z_ = z * r.getW() + w * r.getZ() + x * r.getY() - y * r.getX();
+        float w_ = w * r.getW() - x * r.getX() - y * r.getY() - z * r.getZ();
 
         return new Quaternion(x_, y_, z_, w_);
     }

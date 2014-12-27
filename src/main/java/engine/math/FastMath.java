@@ -22,4 +22,16 @@ public class FastMath {
     public static float asin(float x) {
         return (float) Math.asin(x);
     }
+
+    public static float sqrt(float value) {
+        return (float) Math.sqrt(value);
+    }
+
+    public static float toRadians(float value) {
+        return value / 180.0f * PI;
+    }
+
+    public static float toDegree(float value) {
+        return value / PI * 180.0f;
+    }
 }

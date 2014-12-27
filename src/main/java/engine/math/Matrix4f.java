@@ -14,6 +14,47 @@ public class Matrix4f {
         this.identity();
     }
 
+    public Matrix4f(Vector3f location, Vector3f direction, Vector3f up) {
+        this();
+        Vector3f s = direction.cross(up);
+        Vector3f u = s.cross(direction);
+
+        m[0][0] = s.getX(); m[0][1] = s.getY(); m[0][2] = s.getZ();
+        m[1][0] = u.getX(); m[1][1] = u.getY(); m[1][2] = u.getZ();
+        m[2][0] = -direction.getX();m[2][1] = -direction.getY();m[2][2] = -direction.getZ();
+
+        this.translate(location.negate());
+    }
+
+    public Matrix4f(float angle, Vector3f axis) {
+        m = new float[4][4];
+        axis = axis.normalized();
+
+        float cos = FastMath.cos(angle);
+        float sin = FastMath.sin(angle);
+        float oneMinusCos = 1.0f - cos;
+        float xx = axis.getX() * axis.getX();
+        float yy = axis.getY() * axis.getY();
+        float zz = axis.getZ() * axis.getZ();
+        float xym = axis.getX() * axis.getY() * oneMinusCos;
+        float xzm = axis.getX() * axis.getZ() * oneMinusCos;
+        float yzm = axis.getY() * axis.getZ() * oneMinusCos;
+        float xs = axis.getX() * sin;
+        float ys = axis.getY() * sin;
+        float zs = axis.getZ() * sin;
+
+        m[0][0] = xx * oneMinusCos + cos;
+        m[0][1] = xym - zs;
+        m[0][2] = xzm + ys;
+        m[1][0] = xym + zs;
+        m[1][1] = yy * oneMinusCos + cos;
+        m[1][2] = yzm - xs;
+        m[2][0] = xzm - ys;
+        m[2][1] = yzm + xs;
+        m[2][2] = zz * oneMinusCos + cos;
+        m[3][3] = 1.0f;
+    }
+
     public Matrix4f(Quaternion quaternion) {
         m = new float[4][4];
         float n = 1 / quaternion.length() * 2.0f;
