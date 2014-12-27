@@ -173,6 +173,36 @@ public class Quaternion {
         return this;
     }
 
+    public Quaternion inverse() {
+        return normalize().conjugate();
+    }
+
+    public Quaternion add(Quaternion q) {
+        return add(q.getX(), q.getY(), q.getZ(), q.getW());
+    }
+
+    public Quaternion add(float x, float y, float z, float w) {
+        this.x += x;
+        this.y += y;
+        this.z += z;
+        this.w += w;
+
+        return this;
+    }
+
+    public Quaternion sub(Quaternion q) {
+        return sub(q.getX(), q.getY(), q.getZ(), q.getW());
+    }
+
+    public Quaternion sub(float x, float y, float z, float w) {
+        this.x -= x;
+        this.y -= y;
+        this.z -= z;
+        this.w -= w;
+
+        return this;
+    }
+
     public Quaternion mul(Quaternion r) {
         float x_ = x * r.getW() + w * r.getX() + y * r.getZ() - z * r.getY();
         float y_ = y * r.getW() + w * r.getY() + z * r.getX() - x * r.getZ();
@@ -189,6 +219,10 @@ public class Quaternion {
         float z_ = w * r.getZ() + x * r.getY() - y * r.getX();
 
         return new Quaternion(x_, y_, z_, w_);
+    }
+
+    public float dot(Quaternion q) {
+        return x * q.x + y * q.y + z * q.z + w * q.w;
     }
 
     public float getX() {
@@ -231,5 +265,10 @@ public class Quaternion {
                 ", z=" + z +
                 ", w=" + w +
                 '}';
+    }
+
+    @Override
+    public Quaternion clone() {
+        return new Quaternion(x, y, z, w);
     }
 }
