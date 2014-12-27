@@ -14,7 +14,7 @@ public class Vector2f {
     }
 
     public float length() {
-        return (float) Math.sqrt(x * x + y * y);
+        return (float) FastMath.sqrt(x * x + y * y);
     }
 
     public float dot(Vector2f r) {
@@ -31,11 +31,11 @@ public class Vector2f {
     }
 
     public Vector2f rotate(float angle) {
-        double rad = Math.toRadians(angle);
-        double cos = Math.cos(rad);
-        double sin = Math.sin(rad);
+        float rad = FastMath.toRadians(angle);
+        float cos = FastMath.cos(rad);
+        float sin = FastMath.sin(rad);
 
-        return new Vector2f((float)(x * cos - y * sin),(float)(x * sin + y * cos));
+        return new Vector2f(x * cos - y * sin, x * sin + y * cos);
     }
 
     public Vector2f add(Vector2f r) {

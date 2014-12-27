@@ -1,8 +1,5 @@
 package engine.math;
 
-/**
- * @author Gugu42
- */
 public class Vector3f {
 
     private float x;
@@ -20,7 +17,7 @@ public class Vector3f {
     }
 
     public float length() {
-        return (float) Math.sqrt(x * x + y * y + z * z);
+        return FastMath.sqrt(x * x + y * y + z * z);
     }
 
     public float dot(Vector3f r) {
@@ -42,7 +39,7 @@ public class Vector3f {
     }
 
     public Vector3f rotate(float angle, Vector3f axis) {
-        Quaternion rotation = new Quaternion(axis, angle);
+        Quaternion rotation = new Quaternion(angle, axis);
         Quaternion conjugate = rotation.conjugate();
 
         Quaternion w = rotation.mul(this).mul(conjugate);
@@ -91,7 +88,7 @@ public class Vector3f {
     }
 
     public Vector3f abs() {
-        return new Vector3f(Math.abs(x), Math.abs(y), Math.abs(z));
+        return new Vector3f(FastMath.abs(x), FastMath.abs(y), FastMath.abs(z));
     }
 
     public static Vector3f zero() {

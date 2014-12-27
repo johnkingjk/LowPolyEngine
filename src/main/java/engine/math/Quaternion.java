@@ -1,8 +1,5 @@
 package engine.math;
 
-/**
- * @author Gugu42
- */
 public class Quaternion {
 
     public static final Quaternion IDENTITY = new Quaternion();
@@ -56,7 +53,7 @@ public class Quaternion {
         normalize();
     }
 
-    public Quaternion(Vector3f axis, float angle) {
+    public Quaternion(float angle, Vector3f axis) {
         float halfAngle = 0.5f * angle;
         float sin = FastMath.sin(halfAngle);
 
@@ -149,7 +146,7 @@ public class Quaternion {
     }
 
     public float length() {
-        return (float) Math.sqrt(x * x + y * y + z * z + w * w);
+        return FastMath.sqrt(x * x + y * y + z * z + w * w);
     }
 
     public Quaternion normalize() {

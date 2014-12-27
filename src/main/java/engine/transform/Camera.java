@@ -34,8 +34,8 @@ public class Camera extends Transform {
 
     public void update() {
         if(Mouse.isButtonDown(MouseButton.LEFT) || Mouse.isButtonDown(MouseButton.RIGHT)) {
-            rotateCamera(FastMath.toRadians(InputManager.getMouseDeltaPos().getX()), new Vector3f(0, 1, 0));
-            rotateCamera(FastMath.toRadians(InputManager.getMouseDeltaPos().getY()), rotation.getAxis(0));
+            rotateCamera(FastMath.toRadians(-InputManager.getMouseDeltaPos().getY()), new Vector3f(1, 0, 0));
+            rotateCamera(FastMath.toRadians(InputManager.getMouseDeltaPos().getX()), rotation.getAxis(1));
         }
     }
 
@@ -66,7 +66,7 @@ public class Camera extends Transform {
 
     private void recalculateProjection() {
         float aspectRatio = width / height;
-        float y_scale = (float) (1f / Math.tan(Math.toRadians(fov / 2))) * aspectRatio;
+        float y_scale = 1f / FastMath.tan(FastMath.toRadians(fov / 2)) * aspectRatio;
         float x_scale = y_scale /aspectRatio;
         float frustum_length = zFar - zNear;
 

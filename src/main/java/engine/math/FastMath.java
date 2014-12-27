@@ -19,8 +19,16 @@ public class FastMath {
         return (float) Math.atan2(x, y);
     }
 
-    public static float asin(float x) {
-        return (float) Math.asin(x);
+    public static float asin(float value) {
+        return (float) Math.asin(value);
+    }
+
+    public static float tan(float value) {
+        return (float) Math.tan(value);
+    }
+
+    public static float abs(float value) {
+        return value < 0 ? -value : value;
     }
 
     public static float sqrt(float value) {
