@@ -37,14 +37,10 @@ public class Vector3f {
         float y_ = z * r.getX() - x * r.getZ();
         float z_ = x * r.getY() - y * r.getX();
 
-        setX(x_);
-        setY(y_);
-        setZ(z_);
-
-        return this;
+        return new Vector3f(x_, y_, z_);
     }
 
-    public Vector3f normalized() {
+    public Vector3f normalize() {
         float length = length();
 
         x /= length;

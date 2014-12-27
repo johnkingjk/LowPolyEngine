@@ -38,7 +38,7 @@ public class Matrix4f {
 
     public Matrix4f(float angle, Vector3f axis) {
         m = new float[4][4];
-        axis = axis.normalized();
+        axis = axis.normalize();
 
         float cos = FastMath.cos(angle);
         float sin = FastMath.sin(angle);

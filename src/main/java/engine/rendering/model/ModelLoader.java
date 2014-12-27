@@ -185,7 +185,7 @@ public class ModelLoader {
 
                         //calculate normal if model part not smooth + no normals are given in obj
                         if(calculateNormal && !smooth) {
-                            Vector3f triangleNormal = locations[0].sub(locations[1]).cross(locations[0].sub(locations[2])).normalized();
+                            Vector3f triangleNormal = locations[0].clone().sub(locations[1]).cross(locations[0].clone().sub(locations[2])).normalize();
                             for(int j = 0; j < 3; j++) {
                                 normals[j] = triangleNormal;
                             }

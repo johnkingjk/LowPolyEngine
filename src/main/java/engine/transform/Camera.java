@@ -46,9 +46,9 @@ public class Camera extends Transform {
         Vector3f left = rotation.getAxis(0);
         Vector3f direction = rotation.getAxis(2);
 
-        up = matrix.mul(up);
-        left = matrix.mul(left);
-        direction = matrix.mul(direction);
+        matrix.mul(up);
+        matrix.mul(left);
+        matrix.mul(direction);
 
         Quaternion q = new Quaternion(left, up, direction);
         q.normalize();
