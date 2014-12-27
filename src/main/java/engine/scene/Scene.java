@@ -11,7 +11,7 @@ import java.util.List;
  */
 public class Scene {
 
-    private List<Transform> transforms = new ArrayList<>();
+    private List<GameObject> gameObjects = new ArrayList<>();
 
 
 
