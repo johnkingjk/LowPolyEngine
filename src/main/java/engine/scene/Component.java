@@ -9,9 +9,9 @@ public abstract class Component {
 
     private GameObject gameObject;
 
-    public void onEnable() {}
+    public void onStart() {}
 
-    public void onDisable() {}
+    public void onStop() {}
 
     public void onUpdate() {}
 
@@ -22,6 +22,10 @@ public abstract class Component {
     public void onPause() {}
 
     public void onResume() {}
+
+    public void onApply() {}
+
+    public void onRemove() {}
 
     void init(GameObject gameObject) {
         this.gameObject = gameObject;
