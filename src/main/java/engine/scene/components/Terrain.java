@@ -1,4 +1,4 @@
-package engine.scene;
+package engine.scene.components;
 
 import engine.math.Vector3f;
 import engine.rendering.OpenGLLoader;

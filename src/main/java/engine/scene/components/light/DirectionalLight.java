@@ -1,6 +1,5 @@
-package engine.scene.light;
+package engine.scene.components.light;
 
-import engine.math.Quaternion;
 import engine.math.Vector3f;
 
 /**

@@ -1,11 +1,13 @@
-package engine.scene.light;
+package engine.scene.components.light;
 
 import engine.math.Vector3f;
 import engine.scene.Component;
+import engine.scene.ComponentInfo;
 
 /**
  * Created by Marco on 26.12.2014.
  */
+@ComponentInfo(singleton = true)
 public class Light extends Component {
 
     private float intensity;

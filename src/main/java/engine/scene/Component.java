@@ -4,6 +4,7 @@ package engine.scene;
  * Copyright by michidk
  * Created: 28.12.2014.
  */
+@ComponentInfo(singleton = false)
 public abstract class Component {
 
     private GameObject gameObject;

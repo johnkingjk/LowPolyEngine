@@ -1,6 +1,5 @@
 package engine.scene;
 
-import engine.scene.light.Light;
 import engine.transform.Transform;
 
 import java.util.ArrayList;
@@ -15,10 +14,14 @@ public class GameObject extends Transform {
     private List<Component> components = new ArrayList<>();
 
     public void addComponent(Component component) {
-        if(components.contains(component)) {
-            return;
-        }
-        component.init(this);
-        components.add(component);
+
+    }
+
+    public void setComponent(Component component) {
+
+    }
+
+    public void removeComponent(Component component) {
+
     }
 }

@@ -1,7 +1,5 @@
 package engine.scene;
 
-import engine.transform.Transform;
-
 import java.util.ArrayList;
 import java.util.List;
 
