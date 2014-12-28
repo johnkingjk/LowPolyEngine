@@ -1,14 +1,14 @@
-package engine.rendering.model;
+package engine.rendering.mesh;
 
 /**
  * Created by Marco on 22.12.2014.
  */
-public class Model {
+public class Mesh {
 
     private int vaoID;
-    private ModelPart[] parts;
+    private MeshPart[] parts;
 
-    public Model(int vaoID, ModelPart[] parts) {
+    public Mesh(int vaoID, MeshPart[] parts) {
         this.vaoID = vaoID;
         this.parts = parts;
     }
@@ -17,7 +17,7 @@ public class Model {
         return vaoID;
     }
 
-    public ModelPart[] getParts() {
+    public MeshPart[] getParts() {
         return parts;
     }
 }

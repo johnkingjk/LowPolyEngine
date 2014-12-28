@@ -1,4 +1,4 @@
-package engine.rendering.model;
+package engine.rendering.mesh;
 
 import engine.rendering.OpenGLLoader;
 import engine.math.Vector2f;
@@ -16,7 +16,7 @@ import java.util.Vector;
 /**
  * Created by Marco on 22.12.2014.
  */
-public class ModelLoader {
+public class MeshLoader {
 
     private static final boolean USE_ALPHA_MATERIALS = false;
     private static final Material DEFAULT_MATERIAL = new Material("default", new Vector3f(0, 0, 0), new Vector3f(0.5f, 0.5f, 0.5f), new Vector3f(0, 0, 0), (byte) 0, 0, 0, new Texture(0));
@@ -24,8 +24,8 @@ public class ModelLoader {
     /*
     reads the .obj file
      */
-    public Model readObjectFile(String file, OpenGLLoader loader) {
-        ArrayList<ModelPart> parts = new ArrayList<>();
+    public Mesh readObjectFile(String file, OpenGLLoader loader) {
+        ArrayList<MeshPart> parts = new ArrayList<>();
         Vector<Vertex> vertices = new Vector<>();
         ArrayList<Integer> indices = new ArrayList<>();
 
@@ -34,8 +34,8 @@ public class ModelLoader {
             String line;
 
             //setup temp save
-            ModelGroup currentGroup = new ModelGroup(DEFAULT_MATERIAL, 0);
-            ModelPart currentPart = new ModelPart("default");
+            MaterialGroup currentGroup = new MaterialGroup(DEFAULT_MATERIAL, 0);
+            MeshPart currentPart = new MeshPart("default");
             currentPart.getGroups().add(currentGroup);
             parts.add(currentPart);
 
@@ -54,8 +54,8 @@ public class ModelLoader {
                 if(data[0].equals("mtllib")) {
                     String materialFile = file.substring(0, file.lastIndexOf("/") + 1) + data[1];
                     materials = readMaterialFile(materialFile, loader);
-                } else if (data[0].equals("o")) { //set model part
-                    ModelPart part = new ModelPart(data[1]);
+                } else if (data[0].equals("o")) { //set mesh part
+                    MeshPart part = new MeshPart(data[1]);
 
                     //check if old object is useless
                     if(currentPart.isEmpty()) {
@@ -68,21 +68,21 @@ public class ModelLoader {
                     }
 
                     //set new default group to new object
-                    currentGroup = new ModelGroup(DEFAULT_MATERIAL, currentGroup.getIndexStart() + currentGroup.getIndexCount());
+                    currentGroup = new MaterialGroup(DEFAULT_MATERIAL, currentGroup.getIndexStart() + currentGroup.getIndexCount());
                     part.getGroups().add(currentGroup);
 
-                    //set model object
+                    //set mesh object
                     currentPart = part;
                     parts.add(part);
-                } else if (data[0].equals("usemtl")) { //set model part
+                } else if (data[0].equals("usemtl")) { //set mesh part
                     Material material = getMaterial(materials, data[1]);
 
-                    //check if old model part is useless
+                    //check if old mesh part is useless
                     if(currentGroup.getIndexCount() == 0) {
                         currentPart.getGroups().remove(currentGroup);
                     }
 
-                    currentGroup = new ModelGroup(material, currentGroup.getIndexStart() + currentGroup.getIndexCount()); //set new material
+                    currentGroup = new MaterialGroup(material, currentGroup.getIndexStart() + currentGroup.getIndexCount()); //set new material
                     currentPart.getGroups().add(currentGroup);
                 }
 
@@ -166,9 +166,9 @@ public class ModelLoader {
             vertices.setSize(nextVertexIndex);
 
             //part for calculating missing normals
-            for(ModelPart part : parts) {
+            for(MeshPart part : parts) {
                 boolean smooth = part.isSmooth();
-                for(ModelGroup group : part.getGroups()) {
+                for(MaterialGroup group : part.getGroups()) {
                     //split into triangles
                     for(int i = group.getIndexStart(); i < group.getIndexStart() + group.getIndexCount(); i+=3) {
                         Vector3f[] locations = new Vector3f[3];
@@ -183,7 +183,7 @@ public class ModelLoader {
                             calculateNormal = calculateNormal || index.getZ() == -1;
                         }
 
-                        //calculate normal if model part not smooth + no normals are given in obj
+                        //calculate normal if mesh part not smooth + no normals are given in obj
                         if(calculateNormal && !smooth) {
                             Vector3f triangleNormal = locations[0].clone().sub(locations[1]).cross(locations[0].clone().sub(locations[2])).normalize();
                             for(int j = 0; j < 3; j++) {
@@ -250,7 +250,7 @@ public class ModelLoader {
             buffer[i] = indices.get(i);
         }
         int vaoID = loader.loadToVAO(vertices.toArray(new Vertex[vertices.size()]), buffer);
-        return new Model(vaoID, parts.toArray(new ModelPart[parts.size()]));
+        return new Mesh(vaoID, parts.toArray(new MeshPart[parts.size()]));
     }
 
     private Material getMaterial(ArrayList<Material> materials, String name) {

@@ -1,4 +1,4 @@
-package engine.rendering.model;
+package engine.rendering.mesh;
 
 import engine.math.Vector2f;
 import engine.math.Vector3f;

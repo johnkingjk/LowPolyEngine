@@ -2,9 +2,9 @@ package engine.rendering;
 
 import engine.math.Matrix4f;
 import engine.misc.Unloadable;
-import engine.rendering.model.Model;
-import engine.rendering.model.ModelGroup;
-import engine.rendering.model.ModelPart;
+import engine.rendering.mesh.Mesh;
+import engine.rendering.mesh.MaterialGroup;
+import engine.rendering.mesh.MeshPart;
 import engine.rendering.shader.DefaultShader;
 import engine.rendering.shader.ShaderProgram;
 import engine.transform.Camera;
@@ -22,7 +22,7 @@ import java.util.Map;
  */
 public class Renderer implements Unloadable{
 
-    private final HashMap<Model, ArrayList<Transform>> models = new HashMap<>();
+    private final HashMap<Mesh, ArrayList<Transform>> models = new HashMap<>();
     private final ArrayList<ShaderProgram> shaderPrograms = new ArrayList<>();
     private final DefaultShader defaultShader;
     private final Matrix4f projectionMatrix;
@@ -45,24 +45,24 @@ public class Renderer implements Unloadable{
         shaderPrograms.add(shader);
     }
 
-    public void processModel(Model model, Transform transform) {
-        ArrayList<Transform> transforms = models.get(model);
+    public void processModel(Mesh mesh, Transform transform) {
+        ArrayList<Transform> transforms = models.get(mesh);
         if(transforms == null) {
-            models.put(model, (transforms = new ArrayList<>()));
+            models.put(mesh, (transforms = new ArrayList<>()));
         }
         transforms.add(transform);
     }
 
     public void render(Camera camera) {
-        for(Map.Entry<Model, ArrayList<Transform>> entry : models.entrySet()) {
-            Model model = entry.getKey();
+        for(Map.Entry<Mesh, ArrayList<Transform>> entry : models.entrySet()) {
+            Mesh mesh = entry.getKey();
             ShaderProgram currentShader = defaultShader;
             Matrix4f viewMatrix = camera.getViewMatrix();
-            prepareModel(model);
+            prepareModel(mesh);
 
             currentShader.start();
             currentShader.setupViewMatrix(viewMatrix);
-            for(ModelPart part : model.getParts()) {
+            for(MeshPart part : mesh.getParts()) {
                 //switch shader
                 ShaderProgram targetShader = part.getShader() == null ? defaultShader : part.getShader();
                 if(targetShader != currentShader) {
@@ -83,16 +83,16 @@ public class Renderer implements Unloadable{
         models.clear();
     }
 
-    private void render(ModelPart part, Transform transform, ShaderProgram shader) {
+    private void render(MeshPart part, Transform transform, ShaderProgram shader) {
         shader.setupTransform(transform.getTransformation());
-        for(ModelGroup group : part.getGroups()) {
+        for(MaterialGroup group : part.getGroups()) {
             shader.setupMaterial(group.getMaterial());
             GL11.glDrawElements(GL11.GL_TRIANGLES, group.getIndexCount(), GL11.GL_UNSIGNED_INT, group.getIndexStart() * 4);
         }
     }
 
-    private void prepareModel(Model model) {
-        GL30.glBindVertexArray(model.getVaoID());
+    private void prepareModel(Mesh mesh) {
+        GL30.glBindVertexArray(mesh.getVaoID());
         GL20.glEnableVertexAttribArray(0);
         GL20.glEnableVertexAttribArray(1);
         GL20.glEnableVertexAttribArray(2);

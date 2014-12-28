@@ -3,7 +3,7 @@ package engine.rendering;
 import engine.math.Vector2f;
 import engine.math.Vector3f;
 import engine.misc.Unloadable;
-import engine.rendering.model.Vertex;
+import engine.rendering.mesh.Vertex;
 import engine.rendering.texture.Texture;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.*;

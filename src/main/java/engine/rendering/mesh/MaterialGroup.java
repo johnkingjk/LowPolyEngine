@@ -1,17 +1,17 @@
-package engine.rendering.model;
+package engine.rendering.mesh;
 
 import engine.rendering.texture.Material;
 
 /**
  * Created by Marco on 22.12.2014.
  */
-public class ModelGroup {
+public class MaterialGroup {
 
     private Material material;
     private int indexStart;
     private int indexCount;
 
-    public ModelGroup(Material material, int indexStart) {
+    public MaterialGroup(Material material, int indexStart) {
         this.material = material;
         this.indexStart = indexStart;
     }

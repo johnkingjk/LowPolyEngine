@@ -5,8 +5,8 @@ import engine.math.Quaternion;
 import engine.rendering.OpenGLLoader;
 import engine.math.Vector3f;
 import engine.rendering.Renderer;
-import engine.rendering.model.Model;
-import engine.rendering.model.ModelLoader;
+import engine.rendering.mesh.Mesh;
+import engine.rendering.mesh.MeshLoader;
 import engine.rendering.shader.DefaultShader;
 import engine.transform.Camera;
 import engine.transform.Transform;
@@ -35,13 +35,13 @@ public class LowPolyEngine {
 
         Camera camera = new Camera(new Vector3f(0, 10, -10), Quaternion.IDENTITY, Display.getWidth(), Display.getHeight(), 70, 0.1f, 1000.0f);
         Renderer renderer = new Renderer(camera.getProjection());
-        ModelLoader modelLoader = new ModelLoader();
+        MeshLoader meshLoader = new MeshLoader();
 
-        Model mountain = modelLoader.readObjectFile("src/main/resources/models/mountain.obj", loader);
+        Mesh mountain = meshLoader.readObjectFile("src/main/resources/models/mountain.obj", loader);
         Transform transform_mountain = new Transform();
         transform_mountain.setTranslation(new Vector3f(0, 0, 0));
 
-        Model bigvalley = modelLoader.readObjectFile("src/main/resources/models/bigvalley2.obj", loader);
+        Mesh bigvalley = meshLoader.readObjectFile("src/main/resources/models/bigvalley2.obj", loader);
         Transform transform_bigvalley = new Transform();
         transform_bigvalley.setTranslation(new Vector3f(0, 0, 0));
 

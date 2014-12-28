@@ -1,4 +1,4 @@
-package engine.rendering.model;
+package engine.rendering.mesh;
 
 import engine.rendering.shader.ShaderProgram;
 
@@ -7,14 +7,14 @@ import java.util.ArrayList;
 /**
  * Created by Marco on 25.12.2014.
  */
-public class ModelPart {
+public class MeshPart {
 
     private String name;
-    private ArrayList<ModelGroup> groups;
+    private ArrayList<MaterialGroup> groups;
     private ShaderProgram program = null;
     private boolean smooth;
 
-    public ModelPart(String name) {
+    public MeshPart(String name) {
         this.name = name;
         this.groups = new ArrayList<>();
     }
@@ -23,7 +23,7 @@ public class ModelPart {
         return name;
     }
 
-    public ArrayList<ModelGroup> getGroups() {
+    public ArrayList<MaterialGroup> getGroups() {
         return groups;
     }
 
@@ -44,7 +44,7 @@ public class ModelPart {
     }
 
     public boolean isEmpty() {
-        for(ModelGroup group : groups) {
+        for(MaterialGroup group : groups) {
             if(group.getIndexCount() != 0) {
                 return false;
             }
