@@ -6,6 +6,16 @@ package engine.scene;
  */
 public abstract class Component {
 
+    private GameObject gameObject;
+
     public abstract void onUpdate();
+
+    void init(GameObject gameObject) {
+        this.gameObject = gameObject;
+    }
+
+    public GameObject gameObject() {
+        return gameObject;
+    }
 
 }

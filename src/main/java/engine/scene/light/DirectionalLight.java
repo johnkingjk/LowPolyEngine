@@ -9,8 +9,8 @@ import engine.math.Vector3f;
  */
 public class DirectionalLight extends Light {
 
-    public DirectionalLight(Vector3f translation, Quaternion rotation, float intensity, Vector3f color) {
-        super(translation, rotation, intensity, color);
+    public DirectionalLight(float intensity, Vector3f color) {
+        super(intensity, color);
     }
 
 }

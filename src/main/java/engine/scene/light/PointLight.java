@@ -1,6 +1,5 @@
 package engine.scene.light;
 
-import engine.math.Quaternion;
 import engine.math.Vector3f;
 
 /**
@@ -9,8 +8,8 @@ import engine.math.Vector3f;
  */
 public class PointLight extends Light {
 
-    public PointLight(Vector3f translation, Quaternion rotation, float intensity, Vector3f color) {
-        super(translation, rotation, intensity, color);
+    public PointLight(float intensity, Vector3f color) {
+        super(intensity, color);
     }
 
 }

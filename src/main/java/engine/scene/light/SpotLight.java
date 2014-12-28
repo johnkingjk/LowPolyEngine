@@ -1,6 +1,5 @@
 package engine.scene.light;
 
-import engine.math.Quaternion;
 import engine.math.Vector3f;
 
 /**
@@ -12,8 +11,8 @@ public class SpotLight extends Light {
     private float angle;
     private float range;
 
-    public SpotLight(Vector3f translation, Quaternion rotation, float intensity, Vector3f color) {
-        super(translation, rotation, intensity, color);
+    public SpotLight(float intensity, Vector3f color) {
+        super(intensity, color);
     }
 
 }

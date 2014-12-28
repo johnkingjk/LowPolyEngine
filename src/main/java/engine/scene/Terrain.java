@@ -1,12 +1,9 @@
 package engine.scene;
 
-import engine.LowPolyEngine;
 import engine.math.Vector3f;
 import engine.rendering.OpenGLLoader;
-import engine.rendering.model.Vertex;
-import engine.rendering.texture.Texture;
+import engine.rendering.mesh.Vertex;
 import engine.transform.Transform;
-import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
@@ -16,7 +13,6 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.nio.FloatBuffer;
 
 /**
  * Copyright by michidk
