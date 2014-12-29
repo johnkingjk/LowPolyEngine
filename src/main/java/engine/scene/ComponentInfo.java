@@ -13,4 +13,6 @@ import java.lang.annotation.Target;
 public @interface ComponentInfo {
 
     public abstract boolean singleton();
+
+    public abstract int priority() default 0;
 }

@@ -32,13 +32,7 @@ public class GameObject extends Transform {
                 }
             }
         }
-        components.add(component); //add component + call onApply
-        component.init(this);
-        try {
-            component.onApply();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        _addComponent(component);
     }
 
     public void setComponent(Component component) {
@@ -48,19 +42,8 @@ public class GameObject extends Transform {
         }
         Component other = getComponent(component.getClass());
         if(other != null) { //check if component of same type is already in component list and override it
-            try {
-                other.onRemove();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            components.remove(other);
-            components.add(component);
-            component.init(this);
-            try {
-                component.onApply();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            _removeComponent(other);
+            _addComponent(other);
             return;
         }
 
@@ -77,13 +60,7 @@ public class GameObject extends Transform {
                 iterator.remove();
             }
         }
-        components.add(component); //add and init the component
-        component.init(this);
-        try {
-            component.onApply();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        _addComponent(component);
     }
 
     public Component removeComponent(Class<? extends Component> component) {
@@ -91,13 +68,15 @@ public class GameObject extends Transform {
         if(other == null) {
             return null;
         }
-        try {
-            other.onRemove();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        components.remove(other);
+        _removeComponent(other);
         return other;
+    }
+
+    public void removeComponent(Component component) {
+        if(!components.contains(component)) {
+            return;
+        }
+        _removeComponent(component);
     }
 
     public Component getComponent(Class<? extends Component> component) {
@@ -107,6 +86,72 @@ public class GameObject extends Transform {
             }
         }
         return null;
+    }
+
+    //TODO : fill methods
+    void onStart() {
+
+    }
+
+    void onStop() {
+
+    }
+
+    void onUpdate() {
+
+    }
+
+    void onFixedUpdate() {
+
+    }
+
+    void onRender() {
+
+    }
+
+    void onPause() {
+
+    }
+
+    void onResume() {
+
+    }
+
+    private void _addComponent(Component component) { //adds component to list sorted by its priority
+        int priority = getPriority(component);
+        for(int i = 0; i < components.size(); i++) {
+            Component current = components.get(i);
+            if(getPriority(current) < priority) {
+                components.add(i, component);
+                break;
+            }
+        }
+        component.init(this);
+        try {
+            component.onApply();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void _removeComponent(Component component) {
+        try {
+            component.onRemove();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        components.remove(component);
+    }
+
+    private int getPriority(Component component) {
+        Class<?> current = component.getClass();
+        while(current != null) {
+            ComponentInfo info = current.getAnnotation(ComponentInfo.class);
+            if(info != null) {
+                return info.priority();
+            }
+        }
+        return 0;
     }
 
     private Class<?> getSingletonClass(Component component) {
