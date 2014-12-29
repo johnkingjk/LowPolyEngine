@@ -34,7 +34,7 @@ public class LowPolyEngine {
         OpenGLLoader loader = new OpenGLLoader();
 
         Camera camera = new Camera(new Vector3f(0, 10, -10), Quaternion.IDENTITY, Display.getWidth(), Display.getHeight(), 70, 0.1f, 1000.0f);
-        Renderer renderer = new Renderer(camera.getProjection());
+        Renderer renderer = new Renderer(camera.getProjectionMatrix());
         MeshLoader meshLoader = new MeshLoader();
 
         Mesh mountain = meshLoader.readObjectFile("src/main/resources/models/mountain.obj", loader);

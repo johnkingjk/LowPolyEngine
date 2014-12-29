@@ -18,7 +18,8 @@ public class Camera extends Transform {
     private float zFar;
 
     private Matrix4f viewMatrix;
-    private Matrix4f projection;
+    private Matrix4f projectionMatrix;
+    private Matrix4f projectionViewMatrix;
 
     public Camera(Vector3f translation, Quaternion rotation, float width, float height, float fov, float zNear, float zFar) {
         super(translation, rotation);
@@ -28,6 +29,8 @@ public class Camera extends Transform {
         this.zNear = zNear;
         this.zFar = zFar;
 
+        projectionMatrix = new Matrix4f();
+        projectionViewMatrix = new Matrix4f();
         recalculateViewMatrix();
         recalculateProjection();
     }
@@ -50,18 +53,17 @@ public class Camera extends Transform {
         matrix.mul(left);
         matrix.mul(direction);
 
-        Quaternion q = new Quaternion(left, up, direction);
-        q.normalize();
+        Quaternion quaternion = new Quaternion(left, up, direction);
+        quaternion.normalize();
 
-        this.setRotation(q);
+        this.rotation = quaternion;
+        recalculateViewMatrix();
     }
 
-    public void recalculateViewMatrix() {
+    private void recalculateViewMatrix() {
         viewMatrix = new Matrix4f(this.translation, this.rotation.getAxis(2), this.rotation.getAxis(1));
-    }
 
-    public Matrix4f getViewMatrix() {
-        return viewMatrix;
+        recalculateProjectionViewMatrix();
     }
 
     private void recalculateProjection() {
@@ -70,19 +72,32 @@ public class Camera extends Transform {
         float x_scale = y_scale /aspectRatio;
         float frustum_length = zFar - zNear;
 
-        Matrix4f m = new Matrix4f();
-        m.set(0, 0, x_scale);
-        m.set(1, 1, y_scale);
-        m.set(2, 2, -((zFar + zNear) / frustum_length));
-        m.set(2, 3, -1);
-        m.set(3, 2, -(2 * zNear * zFar / frustum_length));
-        m.set(3, 3, 0);
+        projectionMatrix.identity();
+        projectionMatrix.set(0, 0, x_scale);
+        projectionMatrix.set(1, 1, y_scale);
+        projectionMatrix.set(2, 2, -((zFar + zNear) / frustum_length));
+        projectionMatrix.set(2, 3, -1);
+        projectionMatrix.set(3, 2, -(2 * zNear * zFar / frustum_length));
+        projectionMatrix.set(3, 3, 0);
 
-        projection = m;
+        recalculateProjectionViewMatrix();
     }
 
-    public Matrix4f getProjection() {
-        return projection;
+    private void recalculateProjectionViewMatrix() {
+        projectionViewMatrix.identity();
+        projectionViewMatrix.mul(projectionMatrix).mul(viewMatrix);
+    }
+
+    public Matrix4f getViewMatrix() {
+        return viewMatrix;
+    }
+
+    public Matrix4f getProjectionMatrix() {
+        return projectionMatrix;
+    }
+
+    public Matrix4f getProjectionViewMatrix() {
+        return projectionViewMatrix;
     }
 
     public float getWidth() {

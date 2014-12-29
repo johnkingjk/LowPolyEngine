@@ -15,7 +15,6 @@ public class Transform {
     protected Vector3f scale;
 
     private Matrix4f matrix;
-    private boolean changed;
 
     public Transform() {
         translation = new Vector3f(0, 0, 0);
@@ -23,7 +22,6 @@ public class Transform {
         scale = new Vector3f(1, 1, 1);
 
         matrix = new Matrix4f();
-        changed = true;
     }
 
     public Transform(Vector3f translation, Quaternion rotation, Vector3f scale) {
@@ -38,15 +36,14 @@ public class Transform {
         this.scale = new Vector3f(1, 1, 1);
     }
 
-    public Matrix4f getTransformation() {
-        if(changed) {
-            matrix.identity();
-            matrix.translate(translation);
-            matrix.rotate(getRotation());
-            matrix.scale(scale);
+    private void recalculateMatrix() {
+        matrix.identity();
+        matrix.translate(translation);
+        matrix.rotate(getRotation());
+        matrix.scale(scale);
+    }
 
-            changed = false;
-        }
+    public Matrix4f getTransformation() {
         return matrix;
     }
 
@@ -56,7 +53,7 @@ public class Transform {
 
     public void setTranslation(Vector3f translation) {
         this.translation = translation;
-        this.changed = true;
+        recalculateMatrix();
     }
 
     public Quaternion getRotation() {
@@ -65,7 +62,7 @@ public class Transform {
 
     public void setRotation(Quaternion rotation) {
         this.rotation = rotation;
-        this.changed = true;
+        recalculateMatrix();
     }
 
     public Vector3f getScale() {
@@ -74,6 +71,6 @@ public class Transform {
 
     public void setScale(Vector3f scale) {
         this.scale = scale;
-        this.changed = true;
+        recalculateMatrix();
     }
 }
