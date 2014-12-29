@@ -15,16 +15,25 @@ public class GameObject extends Transform {
     private List<Component> components = new ArrayList<>();
 
     public void addComponent(Component component) {
-        if(getComponent(component.getClass()) != null) {
+        if(component.gameObject() != null) { //check if component is already in use
+            new ComponentException("Component cannot be used for two GameObjects!").callSave();
             return;
         }
-        Class<?> singleton = getSingletonClass(component);
-        for(Component other : components) {
-            if(singleton.isInstance(other)) {
-                return;
+        if(getComponent(component.getClass()) != null) { //check if component of same type is already added
+            new ComponentException("A Component one type can only be added once!").callSave();
+            return;
+        }
+        Class<?> singleton = getSingletonClass(component); //check if component can only be added once
+        if(singleton != null) {
+            for(Component other : components) {
+                if(singleton.isInstance(other)) {
+                    new ComponentException("There is already " + other.getClass() + " to handle your components function").callSave();
+                    return;
+                }
             }
         }
-        components.add(component);
+        components.add(component); //add component + call onApply
+        component.init(this);
         try {
             component.onApply();
         } catch (Exception e) {
@@ -33,8 +42,12 @@ public class GameObject extends Transform {
     }
 
     public void setComponent(Component component) {
+        if(component.gameObject() != null) { //check if component already in use
+            new ComponentException("Component cannot be used for two GameObjects!").callSave();
+            return;
+        }
         Component other = getComponent(component.getClass());
-        if(other != null) {
+        if(other != null) { //check if component of same type is already in component list and override it
             try {
                 other.onRemove();
             } catch (Exception e) {
@@ -42,6 +55,7 @@ public class GameObject extends Transform {
             }
             components.remove(other);
             components.add(component);
+            component.init(this);
             try {
                 component.onApply();
             } catch (Exception e) {
@@ -51,7 +65,7 @@ public class GameObject extends Transform {
         }
 
         Class<?> singleton = getSingletonClass(component);
-        Iterator<Component> iterator = components.iterator();
+        Iterator<Component> iterator = components.iterator(); //check if there is already a component which can only be added once and remove it
         while(iterator.hasNext()) {
             Component current = iterator.next();
             if(singleton.isInstance(current)) {
@@ -63,7 +77,8 @@ public class GameObject extends Transform {
                 iterator.remove();
             }
         }
-        components.add(component);
+        components.add(component); //add and init the component
+        component.init(this);
         try {
             component.onApply();
         } catch (Exception e) {
