@@ -11,7 +11,6 @@ public class MeshPart {
 
     private String name;
     private ArrayList<MaterialGroup> groups;
-    private ShaderProgram program = null;
     private boolean smooth;
 
     public MeshPart(String name) {
@@ -25,14 +24,6 @@ public class MeshPart {
 
     public ArrayList<MaterialGroup> getGroups() {
         return groups;
-    }
-
-    public ShaderProgram getShader() {
-        return program;
-    }
-
-    public void setShader(ShaderProgram program) {
-        this.program = program;
     }
 
     public boolean isSmooth() {
