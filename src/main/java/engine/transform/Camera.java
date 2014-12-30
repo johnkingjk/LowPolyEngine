@@ -69,7 +69,7 @@ public class Camera extends Transform {
     private void recalculateProjection() {
         float aspectRatio = width / height;
         float y_scale = 1f / FastMath.tan(FastMath.toRadians(fov / 2)) * aspectRatio;
-        float x_scale = y_scale /aspectRatio;
+        float x_scale = y_scale / aspectRatio;
         float frustum_length = zFar - zNear;
 
         projectionMatrix.identity();
