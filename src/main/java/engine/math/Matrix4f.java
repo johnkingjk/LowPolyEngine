@@ -14,14 +14,11 @@ public class Matrix4f {
         this.identity();
     }
 
-    public Matrix4f(float[][] m) {
-        this.m = m;
-    }
-
     public Matrix4f(Vector3f location, Vector3f direction, Vector3f up) {
-        this();
-        Vector3f s = direction.cross(up);
-        Vector3f u = s.cross(direction);
+        m = new float[4][4];
+        Vector3f f = direction.clone();
+        Vector3f s = f.cross(up);
+        Vector3f u = s.cross(f);
 
         m[0][0] = s.getX();
         m[0][1] = s.getY();
@@ -29,11 +26,12 @@ public class Matrix4f {
         m[1][0] = u.getX();
         m[1][1] = u.getY();
         m[1][2] = u.getZ();
-        m[2][0] = -direction.getX();
-        m[2][1] = -direction.getY();
-        m[2][2] = -direction.getZ();
+        m[2][0] = -f.getX();
+        m[2][1] = -f.getY();
+        m[2][2] = -f.getZ();
+        m[3][3] = 1.0f;
 
-        this.translate(location.negate());
+        this.translate(location.clone().negate());
     }
 
     public Matrix4f(float angle, Vector3f axis) {
@@ -116,10 +114,10 @@ public class Matrix4f {
     }
 
     public Matrix4f translate(Vector3f translation) {
-        m[3][0] += m[0][0] * translation.getX() + m[1][0] * translation.getY() + m[2][0] * translation.getZ();
-        m[3][1] += m[0][1] * translation.getX() + m[1][1] * translation.getY() + m[2][1] * translation.getZ();
-        m[3][2] += m[0][2] * translation.getX() + m[1][2] * translation.getY() + m[2][2] * translation.getZ();
-        m[3][3] += m[0][3] * translation.getX() + m[1][3] * translation.getY() + m[2][3] * translation.getZ();
+        m[3][0] = m[0][0] * translation.getX() + m[1][0] * translation.getY() + m[2][0] * translation.getZ();
+        m[3][1] = m[0][1] * translation.getX() + m[1][1] * translation.getY() + m[2][1] * translation.getZ();
+        m[3][2] = m[0][2] * translation.getX() + m[1][2] * translation.getY() + m[2][2] * translation.getZ();
+        //m[3][3] += m[0][3] * translation.getX() + m[1][3] * translation.getY() + m[2][3] * translation.getZ();
 
         return this;
     }
@@ -212,6 +210,14 @@ public class Matrix4f {
         return this;
     }
 
+    public void set(Matrix4f matrix) {
+        for(int x = 0; x < 4; x++) {
+            for(int y = 0; y < 4; y++) {
+                m[x][y] = matrix.get(x, y);
+            }
+        }
+    }
+
     public void copyTo(float[][] matrix) {
         for (int x = 0; x < 4; x++) {
             for (int y = 0; y < 4; y++) {
@@ -246,6 +252,20 @@ public class Matrix4f {
 
     @Override
     public Matrix4f clone() {
-        return new Matrix4f(m);
+        Matrix4f matrix = new Matrix4f();
+        matrix.set(this);
+        return matrix;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        for(int x = 0; x < 4; x++) {
+            for(int y = 0; y < 4; y++) {
+                builder.append("[").append(x).append("][").append(y).append("] = ").append(m[x][y]).append(", ");
+            }
+            builder.append('\n');
+        }
+        return builder.toString();
     }
 }
