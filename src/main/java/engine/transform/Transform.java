@@ -28,12 +28,16 @@ public class Transform {
         this.translation = translation;
         this.rotation = rotation;
         this.scale = scale;
+
+        matrix = new Matrix4f();
     }
 
     public Transform(Vector3f translation, Quaternion rotation) {
         this.translation = translation;
         this.rotation = rotation;
         this.scale = new Vector3f(1, 1, 1);
+
+        matrix = new Matrix4f();
     }
 
     private void recalculateMatrix() {
